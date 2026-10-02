@@ -1,0 +1,27 @@
+# 每次 push 后同步到国内镜像 CNB（cnb.cool）。
+# 开通后在仓库 Settings 里设置：
+#   Variables: CNB_REPO_URL，例如 https://cnb.cool/<组>/ahao-learn-toolkit.git
+#   Secrets:   CNB_TOKEN，CNB 访问令牌
+# 未设置 CNB_REPO_URL 时本任务跳过。
+name: Sync mirrors
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  cnb:
+    if: ${{ vars.CNB_REPO_URL != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync to CNB
+        uses: docker://tencentcom/git-sync
+        env:
+          PLUGIN_TARGET_URL: ${{ vars.CNB_REPO_URL }}
+          PLUGIN_AUTH_TYPE: "https"
+          PLUGIN_USERNAME: "cnb"
+          PLUGIN_PASSWORD: ${{ secrets.CNB_TOKEN }}
+          PLUGIN_FORCE: "true"
