@@ -11,6 +11,13 @@ Prompts and agent skills from the「阿浩_Learn」videos on learning, thinking 
 | `prompts/` | 每期一个提示词文件，文件名带期号 | 打开文件，复制全文，粘到你常用的 AI 对话里 |
 | `skills/` | 可安装的 Agent Skill，每个是一个文件夹，含 `SKILL.md` | 见下方“安装 Skill” |
 
+## 现有内容
+
+| 文件 | 说明 | 对应视频 |
+|---|---|---|
+| [`prompts/S01E05-让AI考你.md`](prompts/S01E05-让AI考你.md) | 让 AI 出题考你，而不是替你总结 | S01E05 |
+| [`skills/thinking-coach`](skills/thinking-coach/SKILL.md) | 思维教练：用思维模型一问一答引导你自己想清楚，含“学完自测” | S01E05 |
+
 ## 安装 Skill
 
 一行命令安装（需要 Node.js）：
