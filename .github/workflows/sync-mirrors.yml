@@ -17,6 +17,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Point the README install prompt at CNB
+        # the mirror's README should send people to the CNB copy (reachable in China); only the block between the markers changes
+        env:
+          CNB_URL: ${{ vars.CNB_REPO_URL }}
+        run: |
+          python3 - <<'PY'
+          import os, re
+          cnb = os.environ["CNB_URL"].removesuffix(".git")
+          s = open("README.md", encoding="utf-8").read()
+          s = re.sub(r"(<!-- install-prompt -->.*?<!-- /install-prompt -->)",
+                     lambda m: m.group(1).replace("https://github.com/1095327780/ahao-learn-toolkit", cnb), s, flags=re.S)
+          open("README.md", "w", encoding="utf-8").write(s)
+          PY
+          git config user.name "mirror-bot"
+          git config user.email "mirror-bot@users.noreply.github.com"
+          git commit -am "README: install from CNB" || true
       - name: Sync to CNB
         uses: docker://tencentcom/git-sync
         env:

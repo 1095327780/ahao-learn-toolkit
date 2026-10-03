@@ -1,37 +1,39 @@
-# ahao-learn-toolkit
+# 阿浩_Learn 工具箱【视频配套】
 
-「阿浩_Learn」视频里提到的提示词和 Skill。视频讲研究和方法，这里放能直接拿去用的部分。
+「阿浩_Learn」视频里用到的提示词和 Skill。
 
-Prompts and agent skills from the「阿浩_Learn」videos on learning, thinking and using AI well.
+## 已更新
 
-## 目录
-
-| 目录 | 内容 | 怎么用 |
+| 期数 | 视频 | 内容 |
 |---|---|---|
-| `prompts/` | 每期一个提示词文件，文件名带期数 | 打开文件，复制全文，粘到你常用的 AI 对话里 |
-| `skills/` | 可安装的 Agent Skill，每个是一个文件夹，含 `SKILL.md` | 见下方“安装 Skill” |
+| 第 2 期 | 习惯让 AI 总结，正在毁掉你的学习 | [让 AI 考你](prompts/02-让AI考你.md)：别让 AI 替你总结，让它出题考你<br>[思维教练](skills/thinking-coach/SKILL.md)：一次问你一个问题，直到你能用自己的话讲清楚 |
 
-## 现有内容
+## 提示词
 
-| 文件 | 说明 | 对应视频 |
-|---|---|---|
-| [`prompts/02-让AI考你.md`](prompts/02-让AI考你.md) | 让 AI 出题考你，而不是替你总结 | 第 2 期 |
-| [`skills/thinking-coach`](skills/thinking-coach/SKILL.md) | 思维教练：用思维模型一问一答引导你自己想清楚，含“学完自测” | 第 2 期 |
+在 `prompts/` 里，按期数命名。每个文件里写了什么时候用、怎么用。
 
 ## 安装 Skill
 
-一行命令安装（需要 Node.js）：
+把下面这段发给你的 AI agent（Claude Code、Codex、Cursor 等），让它帮你装：
 
-```bash
-npx skills add https://github.com/1095327780/ahao-learn-toolkit
+<!-- install-prompt -->
+```text
+帮我安装这个仓库里的 Skill：https://github.com/1095327780/ahao-learn-toolkit
+把 skills/ 下的 thinking-coach 文件夹装到你的 Skill 目录（Claude Code 是 ~/.claude/skills/），装好后告诉我怎么用。
 ```
+<!-- /install-prompt -->
 
-也可以手动安装：下载本仓库，把 `skills/` 下需要的文件夹复制到你的 Skill 目录，例如 Claude Code 的 `~/.claude/skills/`。
+装好后，跟 AI 说“用思维教练考考我”就会开始。
 
-## 国内访问
+用 Obsidian 的话，插件 [FLOWnote](https://github.com/1095327780/FLOWnote) 已经内置了思维教练。
 
-国内镜像地址会在开通后写在这里。
+## 仓库地址
+
+- GitHub：https://github.com/1095327780/ahao-learn-toolkit
+- 国内镜像（CNB）：https://cnb.cool/ahao-learn/ahao-learn-toolkit
+
+两边内容一样，GitHub 更新后会自动同步到 CNB。
 
 ## 许可
 
-MIT，见 `LICENSE`。
+MIT
