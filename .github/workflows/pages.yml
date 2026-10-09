@@ -1,4 +1,4 @@
-# 把 site/ 构建成静态站，发布到 GitHub Pages（www.ahaolearn.com）。
+# 把 site/ 构建成静态站，发布到 GitHub Pages（www.ahaolearn.com），同时把成品推到 site-dist 分支供 EdgeOne Pages 使用。
 # 生效前要在仓库 Settings → Pages 里把 Source 选成 “GitHub Actions”，并把自定义域名设成 www.ahaolearn.com
 # （同一个域名要先从 ahaolearn.github.io 仓库的 Pages 设置里移除）。
 name: Pages
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write  # to push the built site to the site-dist branch
   pages: write
   id-token: write
 
@@ -28,6 +28,15 @@ jobs:
         run: |
           pip install fonttools brotli
           python3 site/build.py
+      - name: Push the built site to the site-dist branch (EdgeOne Pages deploys from it, no build step there)
+        run: |
+          cd dist
+          git init -q -b site-dist
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Build ${GITHUB_SHA::7}"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" site-dist
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
