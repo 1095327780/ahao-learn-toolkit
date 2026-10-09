@@ -1,0 +1,24 @@
+[
+  {
+    "no": "05",
+    "title": "半小时的事，为什么能拖延一整天？",
+    "volume": "注意力使用说明",
+    "color": "#00A6BE",
+    "summary": "拖延常见的三种卡点，以及怎么把第一步缩到最小。",
+    "prompt": "prompts/05-拖延对症.md",
+    "skills": ["procrastination-coach"],
+    "videos": {},
+    "draft": true
+  },
+  {
+    "no": "02",
+    "title": "看完AI总结，为什么一用就忘",
+    "volume": "大脑使用说明",
+    "color": "#7C5CFF",
+    "summary": "别让 AI 替你总结，让它出题考你。",
+    "prompt": "prompts/02-让AI考你.md",
+    "skills": ["thinking-coach"],
+    "videos": {"B站": "https://www.bilibili.com/video/BV12pHq6BEnZ/"},
+    "draft": false
+  }
+]
