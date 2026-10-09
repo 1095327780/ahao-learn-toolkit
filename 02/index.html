@@ -1,0 +1,1299 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>让 AI 考你，而不是替你总结｜阿浩_Learn</title>
+<meta name="description" content="看得越顺，留下的越少。把 AI 从替你思考的拐杖，变成逼你思考的考官。">
+<meta property="og:title" content="让 AI 考你，而不是替你总结｜阿浩_Learn">
+<meta property="og:description" content="看得越顺，留下的越少。把 AI 从替你思考的拐杖，变成逼你思考的考官。">
+<meta name="theme-color" content="#0B1470">
+<link rel="icon" href="/static/favicon.jpg">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav-inner">
+<a class="brand" href="/"><img src="/static/logo.jpg" alt="" width="34" height="34"><span>阿浩_Learn</span></a>
+<nav class="nav-links"><a href="/#toc">目录</a><a href="/#tools">工具箱</a><a href="/#about">关于</a></nav>
+<a class="nav-cta" href="https://space.bilibili.com/24543451">B站主页</a>
+</div></header>
+
+<main class="episode" style="--c:#7C5CFF">
+<section class="ep-hero"><div class="wrap ep-hero-grid">
+<div class="ep-hero-copy">
+<p class="crumbs"><a href="/#toc">目录</a><span>/</span><a href="/#vol-大脑">大脑使用说明</a><span>/</span><span>No.02</span></p>
+<span class="badge" style="--c:#7C5CFF"><span>成长说明书<b>No.02</b></span><em>大脑使用说明</em></span>
+<h1 class="serif">让 AI 考你，而不是替你总结</h1>
+<p class="ep-video">对应视频：看完AI总结，为什么一用就忘　2026-10-03</p>
+<p class="ep-summary">看得越顺，留下的越少。把 AI 从替你思考的拐杖，变成逼你思考的考官。</p>
+<div class="actions"><a class="btn" href="#tool">查看提示词</a><a class="btn btn-ghost" href="https://www.bilibili.com/video/BV12pHq6BEnZ/">在B站观看</a><a class="btn btn-ghost" href="https://www.douyin.com/video/7692432328060095787">在抖音观看</a><a class="btn btn-ghost" href="https://www.youtube.com/watch?v=zXxsS7WrULY">在YouTube观看</a></div>
+</div>
+<a class="ep-cover" href="https://www.bilibili.com/video/BV12pHq6BEnZ/"><img src="/static/covers/02.jpg" alt="看完AI总结，为什么一用就忘 封面"><span class="play" aria-hidden="true"></span></a>
+</div></section>
+<div class="wrap ep-body"><section class="tool-panel" id="tool"><div class="tabs" role="tablist"><button class="tab" type="button" role="tab" data-tab="tab-prompt" aria-selected="true">提示词版</button><button class="tab" type="button" role="tab" data-tab="tab-skill-thinking-coach" aria-selected="false">Skill 版</button></div><div class="tab-panel" id="tab-prompt"><p class="panel-note">复制全文，连同学习材料一起发给 AI</p><figure class="doc is-collapsed"><figcaption><span class="dots"><i></i><i></i><i></i></span><span>提示词</span><button class="copy" type="button">复制提示词</button></figcaption><pre><code>根据这份资料，对我进行闭卷提问。
+每次只出一道结合实际场景的应用题，不要给选项。
+等我回答之后，你再告诉我正确答案和逻辑解析，指出我的盲区。
+我答错或答不上来的题，请记下来；全部结束后列给我，并提醒我隔一两天再考一次。</code></pre><button class="expand" type="button" data-more="展开全文" data-less="收起">展开全文</button></figure></div><div class="tab-panel" id="tab-skill-thinking-coach" hidden>
+<p class="panel-note">适用于 Claude Code、Codex、Cursor 等 AI Agent。下载后解压至 Skill 目录，或将下方指令发送给 Agent 自动安装。</p>
+<div class="skill-row"><a class="btn" href="/downloads/thinking-coach.zip" download>下载 thinking-coach.zip</a><span class="muted small">24.8 KB · 源文件在 <a href="https://github.com/ahao-learn/ahao-learn-toolkit/tree/main/skills/thinking-coach">GitHub</a> / <a href="https://cnb.cool/ahao-learn/ahao-learn-toolkit">CNB</a></span></div>
+<figure class="doc"><figcaption><span class="dots"><i></i><i></i><i></i></span><span>安装说明</span><button class="copy" type="button">复制全文</button></figcaption><pre><code>帮我安装这个 Skill：https://github.com/ahao-learn/ahao-learn-toolkit/tree/main/skills/thinking-coach
+（国内打不开 GitHub 的话，用这个地址：https://cnb.cool/ahao-learn/ahao-learn-toolkit）
+装到你的 Skill 目录（Claude Code 是 ~/.claude/skills/），装好后告诉我怎么用。</code></pre></figure>
+<p class="panel-note">下载不了、也打不开 GitHub 时，把下面这段整段发给 agent，它会把全部 30 个文件逐字建好。</p>
+<figure class="doc is-collapsed"><figcaption><span class="dots"><i></i><i></i><i></i></span><span>安装提示词（含全部文件）</span><button class="copy" type="button">复制安装提示词</button></figcaption><pre><code>请帮我安装一个 Agent Skill：「思维教练」（文件夹名 thinking-coach）。
+
+做法：
+1. 在你的 Skill 目录里新建文件夹 thinking-coach。Claude Code 是 ~/.claude/skills/，Codex 是 ~/.codex/skills/；其他工具用它自己的 Skill 目录，不确定就先问我。
+2. 按下面的路径逐个建文件。每个文件的内容在“&lt;&lt;&lt;文件开始 路径&gt;&gt;&gt;”和“&lt;&lt;&lt;文件结束 路径&gt;&gt;&gt;”两行之间（这两行本身不写进文件）。必须逐字照抄：不改写、不省略、不补充、不调整格式。
+3. 建完以后用 LC_ALL=en_US.UTF-8 wc -m 核对每个文件的字符数（允许末尾多一个换行），再告诉我结果。应该有 30 个文件：
+- SKILL.md（2643 个字符）
+- references/active-recall.md（305 个字符）
+- references/argument-mapping.md（338 个字符）
+- references/atomicity.md（309 个字符）
+- references/bloom-taxonomy.md（350 个字符）
+- references/causal-loop.md（316 个字符）
+- references/circle-of-competence.md（461 个字符）
+- references/cornell-question-column.md（339 个字符）
+- references/counterexample-thinking.md（312 个字符）
+- references/evidence-grading.md（332 个字符）
+- references/expected-value.md（330 个字符）
+- references/feynman-technique.md（491 个字符）
+- references/first-principles.md（466 个字符）
+- references/five-whys.md（455 个字符）
+- references/iceberg-model.md（325 个字符）
+- references/interleaving.md（324 个字符）
+- references/inversion.md（420 个字符）
+- references/leverage-points.md（323 个字符）
+- references/mece.md（325 个字符）
+- references/model-library.md（2589 个字符）
+- references/ooda-loop.md（363 个字符）
+- references/opportunity-cost.md（318 个字符）
+- references/pre-mortem.md（323 个字符）
+- references/progressive-summarization.md（311 个字符）
+- references/second-order-thinking.md（443 个字符）
+- references/socratic-questioning.md（533 个字符）
+- references/spaced-repetition.md（305 个字符）
+- references/sq3r.md（356 个字符）
+- references/steelman.md（328 个字符）
+- references/zettelkasten-linking.md（350 个字符）
+
+&lt;&lt;&lt;文件开始 SKILL.md&gt;&gt;&gt;
+---
+name: thinking-coach
+description: Use when 用户在学习、阅读或决策时需要更深一层的思考：检验自己是不是真懂了、澄清概念、检验论证、追溯根因、比较方案、提炼可迁移的洞见。用思维模型一问一答地引导用户自己想清楚，不替用户总结或下结论。
+---
+
+# 思维教练
+
+目标：在“读、想、写、用”四个环节，用可执行的思维模型，把模糊的理解变成用户自己说得清、用得上的结论。
+
+**核心原则：引导用户自己想，不替用户想。** 不直接给总结、不直接给答案；先让用户试着回答，再给反馈。
+
+## 启动即执行
+
+1. 识别当前任务类型：学完自测 / 概念理解 / 观点检验 / 根因分析 / 方案决策 / 笔记提炼。
+2. 从模型库选择 1—2 个模型（默认不超过 2 个，避免过载）。
+3. 先问用户想要的结果：`这次你更想要哪种结果：检验自己会了没有、解释清楚、写成笔记，还是辅助决策？`
+4. 按模型一次只问一个问题，等用户回答后再追问，最后收敛到结论或下一步。
+
+## 关键规则
+
+- 用户说“说不清 / 想不透 / 需要取舍 / 好像懂了但讲不出来”时，默认进入引导。
+- 每轮 1 个主模型 + 1 个辅助模型；默认 3—6 问，用户累了就降到 1—2 问快速收口。
+- 一次只问一个问题，不要把问题列成清单一次抛出。
+- 用户回答后再给反馈：指出说对了什么、漏了什么、哪里含糊，并给出正确或更完整的说法。不要只说“对/错”。
+- 用户说“先记下来 / 先跳过 / 先到这里”时立即收口，不再追问。
+- 所有例子都对应用户当前的问题，避免空泛说教。
+- 固定收口问句：`我先给你最小记录版本；要继续深挖，还是先记下来？`
+
+## 模型选择
+
+| 任务类型 | 优先模型 |
+|---|---|
+| 学完自测 | 主动回忆 / 费曼技巧 / 间隔复习 / 交错练习 |
+| 概念理解 | 费曼技巧 / 布鲁姆层级 / 苏格拉底式提问 |
+| 观点检验 | 论证图谱 / 钢人化 / 证据分级 / 反例思维 |
+| 根因分析 | 5 个为什么 / 因果回路 / 冰山模型 |
+| 方案决策 | 二阶思考 / 预检验（Pre-mortem）/ 机会成本 / 期望值 |
+| 笔记提炼 | 原子化 / 渐进式摘要 / 卡片链接（Zettelkasten）/ 康奈尔提问栏 |
+
+选定模型后：
+
+1. 先读取对应执行页（如 `references/feynman-technique.md`），按其中的流程和引导问题提问。
+2. 该模型没有执行页时，用 `references/model-library.md` 里的“核心问题 + 不适用场景”做最小引导。
+3. 用户想深挖时，切换到有执行页的近邻模型。
+
+### 学完自测的做法
+
+用户刚读完、看完或让 AI 总结完一段内容时：
+
+1. 请用户把材料发来，或说出主题；**不要先给总结**。
+2. 一次出一道题，优先考理解和应用（放进具体场景），不要给选项。
+3. 用户作答后，给出正确答案和解析，指出漏掉或说错的地方。
+4. 答错或答不上的题记下来，结束时列出，建议隔一两天再考一次。
+5. 如果用户想先猜再看，鼓励先猜：猜错之后再看答案，也比直接看答案记得牢。
+
+## 输出标准
+
+每轮结束必须输出：
+
+- 本轮使用的模型
+- 一句话结论
+- 关键依据或待验证的假设
+- 下一步动作（验证 / 记录 / 执行 / 下次复习时间）
+- 可以直接记进笔记的 3—8 行版本
+
+用户不继续深入时，只输出“最小记录版本”并结束。
+
+## 检查清单
+
+- [ ] 已识别任务类型
+- [ ] 已选择 1—2 个模型
+- [ ] 一次一问，用户先答、再给反馈
+- [ ] 已收敛到结论或下一步
+- [ ] 已输出可记录版本
+
+## 执行页目录
+
+- 模型总览与触发词：`references/model-library.md`
+- 学习与记忆：`active-recall.md`（主动回忆）、`spaced-repetition.md`（间隔复习）、`interleaving.md`（交错练习）、`feynman-technique.md`（费曼技巧）、`bloom-taxonomy.md`（布鲁姆层级）、`sq3r.md`（SQ3R 阅读法）、`cornell-question-column.md`（康奈尔提问栏）
+- 理解与论证：`socratic-questioning.md`（苏格拉底式提问）、`argument-mapping.md`（论证图谱）、`steelman.md`（钢人化）、`evidence-grading.md`（证据分级）、`counterexample-thinking.md`（反例思维）、`circle-of-competence.md`（能力圈）、`first-principles.md`（第一性原理）、`inversion.md`（逆向思维）
+- 根因与系统：`five-whys.md`（5 个为什么）、`causal-loop.md`（因果回路）、`iceberg-model.md`（冰山模型）、`leverage-points.md`（杠杆点）、`mece.md`（MECE 拆解）
+- 决策：`second-order-thinking.md`（二阶思考）、`pre-mortem.md`（预检验）、`opportunity-cost.md`（机会成本）、`ooda-loop.md`（OODA 循环）、`expected-value.md`（期望值）
+- 笔记提炼：`atomicity.md`（原子化）、`progressive-summarization.md`（渐进式摘要）、`zettelkasten-linking.md`（卡片链接）
+
+以上执行页都在 `references/` 目录下。
+
+---
+
+本技能源自 [FLOWnote](https://github.com/1095327780/FLOWnote) 内置的 `ah-think`，已去掉对 Obsidian 和插件的依赖，可在任何支持 Agent Skills 的 AI 工具中使用。在 Obsidian 里使用 FLOWnote，可以把每轮的记录版本直接存进笔记。
+&lt;&lt;&lt;文件结束 SKILL.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/active-recall.md&gt;&gt;&gt;
+# 主动回忆（执行版）
+
+## 何时使用
+
+- 看过就忘，复习效率低。
+- 需要检验是否真正记住关键点。
+
+## 不适用
+
+- 首次接触概念、尚未形成初始理解。
+
+## 最小流程（3步）
+
+1. 先看材料建立初始框架。
+2. 合上材料，自问自答回忆要点。
+3. 对照原文纠错并记录遗漏。
+
+## 引导问题（可直接问）
+
+- 不看资料，你能写出这节 3 个核心点吗？
+- 你刚才漏掉了哪一块？
+
+## 输出模板（3-8行）
+
+```text
+模型：主动回忆
+主题：{{topic}}
+回忆结果：{{recalled_points}}
+遗漏清单：{{gaps}}
+下次复习：{{next_review}}
+```
+&lt;&lt;&lt;文件结束 references/active-recall.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/argument-mapping.md&gt;&gt;&gt;
+# 论证图谱（执行版）
+
+## 何时使用
+
+- 观点很多但逻辑链不清。
+- 需要判断“结论是否被证据支撑”。
+
+## 不适用
+
+- 纯叙事记录，无需论证结构。
+
+## 最小流程（4步）
+
+1. 写出主结论。
+2. 列出支撑理由与证据。
+3. 列出反驳与反证。
+4. 评估结论强度并修订。
+
+## 引导问题（可直接问）
+
+- 你的主结论只有一句话是什么？
+- 哪条证据最强？哪条最弱？
+- 反方最强反驳是什么？
+
+## 输出模板（3-8行）
+
+```text
+模型：论证图谱
+主结论：{{claim}}
+关键理由：{{reasons}}
+关键证据：{{evidence}}
+最强反驳：{{counterargument}}
+修订结论：{{revised_claim}}
+```
+&lt;&lt;&lt;文件结束 references/argument-mapping.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/atomicity.md&gt;&gt;&gt;
+# 原子化（执行版）
+
+## 何时使用
+
+- 一条笔记塞了多个观点。
+- 卡片标题模糊，无法复用。
+
+## 不适用
+
+- 捕获阶段草稿，尚未整理。
+
+## 最小流程（3步）
+
+1. 提取本条笔记的多个断言。
+2. 每个断言拆成单独卡片。
+3. 每张卡片补 2-3 个链接关系。
+
+## 引导问题（可直接问）
+
+- 这段里最小可独立成立的观点是什么？
+- 这张卡片只表达一件事吗？
+
+## 输出模板（3-8行）
+
+```text
+模型：原子化
+原始笔记：{{source_note}}
+拆分断言：{{atomic_claims}}
+建议标题：{{assertive_title}}
+链接建议：{{links}}
+```
+&lt;&lt;&lt;文件结束 references/atomicity.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/bloom-taxonomy.md&gt;&gt;&gt;
+# 布鲁姆层级（执行版）
+
+## 何时使用
+
+- 用户只会复述，难以应用。
+- 需要把学习目标从“记住”升级到“创造”。
+
+## 不适用
+
+- 仅做速记，不追求能力提升。
+
+## 最小流程（3步）
+
+1. 判定当前层级：记忆/理解/应用/分析/评价/创造。
+2. 选择上一级目标（一次只升一级）。
+3. 产出对应任务并执行验证。
+
+## 引导问题（可直接问）
+
+- 你现在是在“记住”，还是已经能“应用”？
+- 要升一级，你需要完成什么具体动作？
+
+## 输出模板（3-8行）
+
+```text
+模型：布鲁姆层级
+当前层级：{{current_level}}
+目标层级：{{target_level}}
+升级动作：{{upgrade_task}}
+验证方式：{{verification}}
+```
+&lt;&lt;&lt;文件结束 references/bloom-taxonomy.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/causal-loop.md&gt;&gt;&gt;
+# 因果回路（执行版）
+
+## 何时使用
+
+- 问题反复回弹，单点修复无效。
+- 需要识别强化回路或平衡回路。
+
+## 不适用
+
+- 单点故障且原因清晰。
+
+## 最小流程（4步）
+
+1. 定义关键变量（3-6个）。
+2. 画出变量因果方向。
+3. 标记强化环/平衡环。
+4. 选择可干预点并给动作。
+
+## 引导问题（可直接问）
+
+- 哪些变量会互相影响并形成循环？
+- 你最有把握先改变哪个变量？
+
+## 输出模板（3-8行）
+
+```text
+模型：因果回路
+核心变量：{{variables}}
+主要回路：{{loops}}
+杠杆点：{{leverage_point}}
+干预动作：{{intervention}}
+```
+&lt;&lt;&lt;文件结束 references/causal-loop.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/circle-of-competence.md&gt;&gt;&gt;
+# 能力圈（执行版）
+
+## 何时使用
+
+- 做判断前不确定自己是否“真懂”。
+- 对新领域想快速形成观点。
+- 复盘中发现自己在陌生领域频繁失误。
+
+## 不适用
+
+- 纯探索学习且暂不做决策。
+- 用户只要记录，不做风险边界评估。
+
+## 最小流程（3步）
+
+1. 圈内识别：哪些是你有直接经验且判断稳定的部分。
+2. 边界识别：哪些是你“知道自己不懂”的部分。
+3. 决策动作：圈内直接做；边界处先验证或求助专家。
+
+## 引导问题（可直接问）
+
+- 这个判断基于直接经验，还是二手信息？
+- 你过去在类似问题上的判断准确吗？
+- 当前最不确定的点是什么？如何补证据？
+
+## 输出模板（3-8行）
+
+```text
+模型：能力圈
+主题：{{topic}}
+圈内：{{inside}}
+边界：{{boundary}}
+圈外风险：{{outside_risk}}
+下一步：{{verify_or_seek_help}}
+```
+
+## 退出条件
+
+- 已明确边界与下一步验证动作。
+- 用户确认按此边界执行或先记录。
+&lt;&lt;&lt;文件结束 references/circle-of-competence.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/cornell-question-column.md&gt;&gt;&gt;
+# Cornell 提问栏思维（执行版）
+
+## 何时使用
+
+- 笔记只摘抄，缺少自测问题。
+- 需要把输入转为可复习结构。
+
+## 不适用
+
+- 纯日志记录，不做学习回顾。
+
+## 最小流程（3步）
+
+1. 右栏记录事实与要点。
+2. 左栏写问题/关键词（可自测）。
+3. 底部写 3-5 行摘要并安排回顾。
+
+## 引导问题（可直接问）
+
+- 这段内容能转成哪 2-3 个自测问题？
+- 如果只看左栏，你能答出来吗？
+
+## 输出模板（3-8行）
+
+```text
+模型：Cornell提问栏
+主题：{{topic}}
+要点区：{{notes}}
+提问区：{{cue_questions}}
+摘要区：{{summary}}
+回顾时间：{{review_time}}
+```
+&lt;&lt;&lt;文件结束 references/cornell-question-column.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/counterexample-thinking.md&gt;&gt;&gt;
+# 反例思维（执行版）
+
+## 何时使用
+
+- 结论听起来“绝对正确”。
+- 需要检验观点边界与失效条件。
+
+## 不适用
+
+- 仅做启发性讨论，不要求严谨检验。
+
+## 最小流程（3步）
+
+1. 写出当前结论（尽量一句话）。
+2. 主动寻找至少 1 个反例场景。
+3. 根据反例修订结论边界。
+
+## 引导问题（可直接问）
+
+- 在什么情况下这个结论不成立？
+- 有没有真实案例与该结论相反？
+
+## 输出模板（3-8行）
+
+```text
+模型：反例思维
+原结论：{{claim}}
+关键反例：{{counterexample}}
+修订边界：{{boundary}}
+新结论：{{revised_claim}}
+```
+&lt;&lt;&lt;文件结束 references/counterexample-thinking.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/evidence-grading.md&gt;&gt;&gt;
+# 证据分级（执行版）
+
+## 何时使用
+
+- 观点依赖“感觉/个例”，需要证据强度判断。
+- 多来源冲突，难判断可信度。
+
+## 不适用
+
+- 纯个人反思，不做普遍化结论。
+
+## 最小流程（3步）
+
+1. 列出证据来源。
+2. 给每条证据分级（低/中/高）。
+3. 用高等级证据优先修订结论。
+
+## 引导问题（可直接问）
+
+- 这条证据是个例、观察研究，还是实验/综述？
+- 如果只保留高质量证据，结论会变化吗？
+
+## 输出模板（3-8行）
+
+```text
+模型：证据分级
+结论：{{claim}}
+高等级证据：{{high_evidence}}
+中低等级证据：{{lower_evidence}}
+结论修订：{{revised_claim}}
+```
+&lt;&lt;&lt;文件结束 references/evidence-grading.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/expected-value.md&gt;&gt;&gt;
+# 期望值思维（执行版）
+
+## 何时使用
+
+- 风险收益难比较。
+- 需要在不确定条件下做选择。
+
+## 不适用
+
+- 无法估计概率，且无法通过小实验校准。
+
+## 最小流程（3步）
+
+1. 列出候选方案与可能结果。
+2. 为结果估计概率与收益/损失。
+3. 计算期望并结合风险承受度决策。
+
+## 引导问题（可直接问）
+
+- 你对这个结果的概率估计是多少？
+- 如果估错概率，最坏损失你能承受吗？
+
+## 输出模板（3-8行）
+
+```text
+模型：期望值思维
+方案：{{options}}
+概率估计：{{probabilities}}
+收益/损失：{{payoffs}}
+期望排序：{{ev_ranking}}
+最终选择：{{choice}}
+```
+&lt;&lt;&lt;文件结束 references/expected-value.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/feynman-technique.md&gt;&gt;&gt;
+# 费曼技巧（执行版）
+
+## 何时使用
+
+- 用户说“好像懂了但说不清”。
+- 需要把概念写成可复用卡片。
+- 需要检验自己是否真理解，而不是只会复述术语。
+
+## 不适用
+
+- 只需快速摘录，不做深挖。
+- 用户明确要求“先记录，不展开”。
+
+## 最小流程（4步）
+
+1. 选定一个概念（一次只选一个）。
+2. 用非术语语言解释给“外行”。
+3. 找到卡壳点（含糊、跳步、无法举例）。
+4. 回到资料补洞，再次简化重述。
+
+## 引导问题（可直接问）
+
+- 你能不用专业词，解释 `X` 是什么吗？
+- `X` 为什么重要？给一个生活中的例子。
+- 哪一段你最难讲清楚？那里通常就是理解盲区。
+
+## 输出模板（3-8行）
+
+```text
+模型：费曼技巧
+概念：{{concept}}
+一句话解释：{{plain_explanation}}
+关键例子：{{example}}
+仍不清楚点：{{gap_or_none}}
+下一步：{{re-read_or_record}}
+```
+
+## 退出条件
+
+- 用户已能流畅解释并给出例子。
+- 用户说“先记下来”或“先到这里”。
+&lt;&lt;&lt;文件结束 references/feynman-technique.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/first-principles.md&gt;&gt;&gt;
+# 第一性原理（执行版）
+
+## 何时使用
+
+- 现有做法卡住，想打破惯例。
+- 需要把方法论写成“可迁移”的卡片。
+- 需要区分“事实”与“习惯性假设”。
+
+## 不适用
+
+- 小问题已有成熟解法，且无需创新。
+- 用户只要快速行动，不需要重构问题。
+
+## 最小流程（3步）
+
+1. 列出当前假设（哪些是“大家都这么做”）。
+2. 拆到基础事实（不可省略的约束）。
+3. 从基础事实重新组合方案。
+
+## 引导问题（可直接问）
+
+- 你现在的做法依赖了哪些默认假设？
+- 这里哪些是硬约束，哪些只是惯例？
+- 如果只保留硬约束，你会如何重做一次？
+
+## 输出模板（3-8行）
+
+```text
+模型：第一性原理
+问题：{{problem}}
+关键假设：{{assumptions}}
+基础事实：{{facts}}
+重构方案：{{rebuild_solution}}
+下一步：{{test_or_record}}
+```
+
+## 退出条件
+
+- 已明确“假设清单 + 基础事实 + 新方案”。
+- 用户确认先记录，后续再验证。
+&lt;&lt;&lt;文件结束 references/first-principles.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/five-whys.md&gt;&gt;&gt;
+# 5个为什么（执行版）
+
+## 何时使用
+
+- 问题反复出现，怀疑只处理了表面现象。
+- 需要从“症状”追到“根因”。
+- 复盘中要形成可行动改进点。
+
+## 不适用
+
+- 多因并发的复杂系统（需配合因果回路）。
+- 紧急止血场景（先止血再追因）。
+
+## 最小流程（5步）
+
+1. 明确问题（可观察现象）。
+2. 连续追问“为什么”3-5次。
+3. 每次只沿一条主因链，不分叉。
+4. 到达“可行动根因”后停止。
+5. 写出防复发动作并验证可执行性。
+
+## 引导问题（可直接问）
+
+- 这个现象为什么会发生？
+- 这个原因背后还有什么原因？
+- 如果这条根因被解决，原问题会明显缓解吗？
+
+## 输出模板（3-8行）
+
+```text
+模型：5个为什么
+问题：{{problem}}
+追问链：{{why_chain}}
+根因：{{root_cause}}
+防复发动作：{{prevention_action}}
+```
+
+## 退出条件
+
+- 已得到“可行动根因”。
+- 用户确认动作可执行并准备落盘。
+&lt;&lt;&lt;文件结束 references/five-whys.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/iceberg-model.md&gt;&gt;&gt;
+# 冰山模型（执行版）
+
+## 何时使用
+
+- 只看到事件，无法解释重复模式。
+- 复盘需要从“现象”上升到“结构”。
+
+## 不适用
+
+- 一次性小事件，无复发风险。
+
+## 最小流程（4层）
+
+1. 事件层：发生了什么。
+2. 模式层：过去是否重复。
+3. 结构层：哪些机制导致模式。
+4. 心智层：背后默认信念是什么。
+
+## 引导问题（可直接问）
+
+- 这件事过去出现过几次？
+- 哪个默认信念让你重复同样选择？
+
+## 输出模板（3-8行）
+
+```text
+模型：冰山模型
+事件：{{event}}
+模式：{{pattern}}
+结构：{{structure}}
+心智模型：{{mindset}}
+改进动作：{{action}}
+```
+&lt;&lt;&lt;文件结束 references/iceberg-model.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/interleaving.md&gt;&gt;&gt;
+# 交错练习（执行版）
+
+## 何时使用
+
+- 单一题型会做，换题型就卡住。
+- 需要提升迁移能力与辨别能力。
+
+## 不适用
+
+- 基础概念尚未入门。
+
+## 最小流程（3步）
+
+1. 选 2-4 类相近题型/任务。
+2. 交替训练，不连刷单一类型。
+3. 复盘“我如何判断该用哪种方法”。
+
+## 引导问题（可直接问）
+
+- 你为什么在这题选了这个方法？
+- 哪种题型最容易被你误判？
+
+## 输出模板（3-8行）
+
+```text
+模型：交错练习
+任务组：{{task_types}}
+训练顺序：{{interleaving_plan}}
+误判点：{{misclassification}}
+改进动作：{{next_action}}
+```
+&lt;&lt;&lt;文件结束 references/interleaving.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/inversion.md&gt;&gt;&gt;
+# 逆向思维（执行版）
+
+## 何时使用
+
+- 需要提前识别风险和盲点。
+- 对某观点“过度认同”，想做反向校验。
+- 行动计划总失败，想先避坑。
+
+## 不适用
+
+- 仅做低风险琐事选择。
+- 用户明确不想展开风险分析。
+
+## 最小流程（3步）
+
+1. 明确目标（你想达成什么）。
+2. 反问“怎样一定会失败”。
+3. 把失败清单反转成“避免清单”。
+
+## 引导问题（可直接问）
+
+- 如果你要把这件事做砸，最可能怎么做？
+- 这些失败行为里，你现在已经在做哪几条？
+- 哪 1-2 条一旦停止，成功率会明显上升？
+
+## 输出模板（3-8行）
+
+```text
+模型：逆向思维
+目标：{{goal}}
+失败路径：{{top_failures}}
+避免动作：{{avoid_actions}}
+本周先做：{{first_step}}
+```
+
+## 退出条件
+
+- 已形成可执行“避免清单”。
+- 用户确认“先按这版执行/先记录”。
+&lt;&lt;&lt;文件结束 references/inversion.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/leverage-points.md&gt;&gt;&gt;
+# 杠杆点（执行版）
+
+## 何时使用
+
+- 很努力但结果提升小。
+- 需要找到“改一点、影响大”的切入点。
+
+## 不适用
+
+- 目标很小，直接执行即可达成。
+
+## 最小流程（3步）
+
+1. 列出系统关键变量。
+2. 判断每个变量可控性与影响度。
+3. 选择 1-2 个高杠杆变量先改。
+
+## 引导问题（可直接问）
+
+- 哪个变量变化后会带动最多连锁变化？
+- 你现在最容易先改动哪个高杠杆点？
+
+## 输出模板（3-8行）
+
+```text
+模型：杠杆点
+目标系统：{{system}}
+关键变量：{{variables}}
+高杠杆点：{{top_leverage_points}}
+先行动作：{{first_actions}}
+```
+&lt;&lt;&lt;文件结束 references/leverage-points.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/mece.md&gt;&gt;&gt;
+# MECE 拆解（执行版）
+
+## 何时使用
+
+- 问题糊成一团，不知从哪下手。
+- 需要系统拆解任务并避免遗漏。
+
+## 不适用
+
+- 问题本身已非常单一且边界明确。
+
+## 最小流程（3步）
+
+1. 先定拆解维度（按目标/流程/对象等）。
+2. 检查互斥（不重叠）与穷尽（不遗漏）。
+3. 对每块定义负责人或下一步。
+
+## 引导问题（可直接问）
+
+- 你这几个子项有重叠吗？
+- 还有哪一块被遗漏了？
+
+## 输出模板（3-8行）
+
+```text
+模型：MECE
+问题：{{problem}}
+拆解维度：{{dimension}}
+子项清单：{{buckets}}
+缺口检查：{{gaps}}
+下一步：{{next_steps}}
+```
+&lt;&lt;&lt;文件结束 references/mece.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/model-library.md&gt;&gt;&gt;
+# 思维模型库（扩展版）
+
+用途：为阅读、学习、做卡片、决策与复盘提供可执行模型。
+
+## A. 理解与学习（Learning）
+
+| 模型 | 触发词 | 核心问题 | 不适用场景 |
+|---|---|---|---|
+| 费曼技巧 | 好像懂了、说不清 | 我能不能用简单话解释给外行？ | 只需快速记录，不做深挖 |
+| 布鲁姆层级 | 只会复述、不会应用 | 我处在记忆/理解/应用/分析/评价/创造哪一层？ | 时间极短、只做事实摘录 |
+| SQ3R 阅读法 | 读完记不住 | 预览-提问-阅读-复述-复习是否完成？ | 极短文本、无需系统阅读 |
+| 主动回忆（Active Recall） | 看过就忘 | 不看资料我能回忆出关键点吗？ | 首次接触且尚未建立基础 |
+| 间隔复习（Spaced Repetition） | 一周后忘光 | 什么时候复习最能稳固记忆？ | 一次性任务、不需长期记忆 |
+| 交错练习（Interleaving） | 只会单题型 | 不同类型能否交替训练？ | 基础概念尚未入门 |
+
+## B. 概念与论证（Reasoning）
+
+| 模型 | 触发词 | 核心问题 | 不适用场景 |
+|---|---|---|---|
+| 第一性原理 | 惯例束缚、想突破 | 最基本事实是什么？哪些只是惯例？ | 常规流程已足够且无优化需求 |
+| 苏格拉底式提问 | 观点模糊 | 你的定义、假设、证据、后果是什么？ | 用户明确不想被追问 |
+| 论证图谱（Argument Mapping） | 逻辑混乱 | 结论、理由、证据、反驳链路是什么？ | 信息量很小、结构已清晰 |
+| 钢人化（Steelman） | 对立观点难评估 | 能否先把反方观点强化到最好版本？ | 纯执行任务、非观点冲突 |
+| 证据分级 | 凭感觉判断 | 证据是轶事、观察、实验还是系统综述？ | 个人体验复盘，不做普遍结论 |
+| 反例思维 | 结论过满 | 在什么条件下它不成立？ | 明确只做启发，不做严格论证 |
+
+## C. 决策与行动（Decision）
+
+| 模型 | 触发词 | 核心问题 | 不适用场景 |
+|---|---|---|---|
+| 逆向思维 | 容易踩坑 | 如果想失败，最可能怎么失败？ | 仅需低风险日常选择 |
+| 二阶思考 | 决策后患 | 然后呢？再然后呢？ | 短期一次性、后果很小 |
+| 机会成本 | 方案太多 | 选择A就放弃了什么？ | 几乎零成本选择 |
+| 预检验 Pre-mortem | 重大决策前 | 假设半年后失败了，最可能原因是什么？ | 低投入试错任务 |
+| OODA 循环 | 环境变化快 | 观察-判断-决策-行动循环是否足够快？ | 静态问题、无需迭代 |
+| 期望值思维 | 风险收益难权衡 | 概率 × 收益/损失 的期望是多少？ | 无法估计概率且不可延后 |
+
+## D. 系统与复盘（Systems）
+
+| 模型 | 触发词 | 核心问题 | 不适用场景 |
+|---|---|---|---|
+| 5个为什么 | 症状反复出现 | 继续追问为什么，根因是什么？ | 复杂系统多因耦合（单因不足） |
+| 因果回路（Causal Loop） | 问题反复回弹 | 哪些反馈回路在强化/平衡系统？ | 单点故障、单因可解 |
+| 冰山模型 | 只盯事件 | 事件背后模式、结构、心智模型是什么？ | 一次性突发小问题 |
+| 杠杆点（Leverage Points） | 费力无效 | 改哪里能“四两拨千斤”？ | 问题规模很小 |
+| 能力圈 | 过度自信 | 这件事在我真正理解的边界内吗？ | 纯探索学习、无需立即决策 |
+| MECE 拆解 | 问题糊成一团 | 是否“互斥且穷尽”地拆开了问题？ | 目标已非常单一清楚 |
+
+## E. 笔记与卡片提炼（Note/Card）
+
+| 模型 | 触发词 | 核心问题 | 不适用场景 |
+|---|---|---|---|
+| 原子化（Atomicity） | 一条笔记太杂 | 这条笔记是否只表达一个核心断言？ | 临时草稿捕获阶段 |
+| 渐进式摘要（Progressive Summarization） | 回看成本高 | 我能否逐层提炼高密度要点？ | 内容极短无需分层 |
+| Zettelkasten 连接思维 | 笔记孤岛 | 这条笔记与哪些旧笔记构成关系？ | 单次记录且无复用诉求 |
+| Cornell 提问栏思维 | 只摘抄不思考 | 我能把记录转成可自测问题吗？ | 非学习型记录（纯日志） |
+
+## 常用组合（推荐）
+
+- 概念不清：`费曼技巧 + 苏格拉底式提问`
+- 观点争议：第1轮 `论证图谱`；第2轮二选一 `钢人化` / `反例思维`
+- 复杂决策：第1轮 `二阶思考`；第2轮二选一 `预检验` / `机会成本`
+- 反复问题：第1轮 `5个为什么`；第2轮二选一 `因果回路` / `杠杆点`
+- 卡片提炼：`原子化 + Zettelkasten连接`（或 `渐进式摘要 + 原子化`）
+
+## 参考来源（精选）
+
+- Richard Feynman learning method (secondary educational syntheses)
+- Bloom’s Taxonomy (Anderson &amp; Krathwohl revision)
+- SQ3R (Robinson)
+- Toyota Production System: Five Whys
+- Howard Marks: Second-Level Thinking
+- Donella Meadows: Leverage Points
+- Peter Senge: Systems Thinking
+- Barbara Minto: MECE / Pyramid Principle
+- Daniel Kahneman: probabilistic decision framing
+- Sönke Ahrens: Smart Notes / Zettelkasten practice
+&lt;&lt;&lt;文件结束 references/model-library.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/ooda-loop.md&gt;&gt;&gt;
+# OODA 循环（执行版）
+
+## 何时使用
+
+- 环境变化快，计划需要快速迭代。
+- 行动中需要“观察-调整”闭环。
+
+## 不适用
+
+- 静态问题且一次决策即可完成。
+
+## 最小流程（4步）
+
+1. Observe：收集最新事实与信号。
+2. Orient：解释信号、更新判断。
+3. Decide：选择当前最优动作。
+4. Act：执行并进入下一轮观察。
+
+## 引导问题（可直接问）
+
+- 最新变化里，哪条最影响你的判断？
+- 这一轮你准备执行哪个最小动作？
+
+## 输出模板（3-8行）
+
+```text
+模型：OODA
+观察：{{observations}}
+判断：{{orientation}}
+决策：{{decision}}
+动作：{{action}}
+下一轮关注：{{next_signal}}
+```
+&lt;&lt;&lt;文件结束 references/ooda-loop.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/opportunity-cost.md&gt;&gt;&gt;
+# 机会成本（执行版）
+
+## 何时使用
+
+- 多方案取舍，难比较。
+- 资源有限，想避免“什么都做”。
+
+## 不适用
+
+- 近乎零成本、可并行的选择。
+
+## 最小流程（3步）
+
+1. 列出候选方案 A/B/C。
+2. 写清每个选择放弃了什么。
+3. 根据目标权重做最终取舍。
+
+## 引导问题（可直接问）
+
+- 选 A，你最核心会失去什么？
+- 放弃项里哪一条代价最大？
+
+## 输出模板（3-8行）
+
+```text
+模型：机会成本
+候选方案：{{options}}
+A的放弃项：{{cost_of_A}}
+B的放弃项：{{cost_of_B}}
+最终选择：{{final_choice}}
+理由：{{reason}}
+```
+&lt;&lt;&lt;文件结束 references/opportunity-cost.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/pre-mortem.md&gt;&gt;&gt;
+# 预检验（Pre-mortem，执行版）
+
+## 何时使用
+
+- 项目/决策风险高，想提前避坑。
+- 方案看起来太顺，担心盲点。
+
+## 不适用
+
+- 低成本可快速试错任务。
+
+## 最小流程（3步）
+
+1. 假设 6 个月后项目失败。
+2. 倒推最可能的失败原因。
+3. 选 1-3 条预防动作立即落实。
+
+## 引导问题（可直接问）
+
+- 假设已经失败，最可能因为什么失败？
+- 哪个风险现在就能被降低？
+
+## 输出模板（3-8行）
+
+```text
+模型：预检验
+目标：{{goal}}
+失败假设：{{failure_story}}
+前三风险：{{top_risks}}
+预防动作：{{preventive_actions}}
+```
+&lt;&lt;&lt;文件结束 references/pre-mortem.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/progressive-summarization.md&gt;&gt;&gt;
+# 渐进式摘要（执行版）
+
+## 何时使用
+
+- 笔记很长，回看成本高。
+- 需要快速提炼“高信噪比要点”。
+
+## 不适用
+
+- 内容极短，没必要分层。
+
+## 最小流程（3层）
+
+1. 第一层：全文摘录。
+2. 第二层：高亮关键句。
+3. 第三层：写 3-5 行摘要结论。
+
+## 引导问题（可直接问）
+
+- 如果只能保留 20%，你保留哪几句？
+- 这段内容的单句结论是什么？
+
+## 输出模板（3-8行）
+
+```text
+模型：渐进式摘要
+主题：{{topic}}
+关键句：{{key_lines}}
+压缩结论：{{compressed_summary}}
+下一步：{{record_or_link}}
+```
+&lt;&lt;&lt;文件结束 references/progressive-summarization.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/second-order-thinking.md&gt;&gt;&gt;
+# 二阶思考（执行版）
+
+## 何时使用
+
+- 重大选择前，担心“短期好长期坏”。
+- 需要评估建议的中长期连锁影响。
+- 复盘时要找“后果的后果”。
+
+## 不适用
+
+- 一次性低影响事务。
+- 决策窗口极短，无法做多轮分析。
+
+## 最小流程（3步）
+
+1. 先写一阶结果（立刻发生什么）。
+2. 追问二阶结果（接下来会引发什么）。
+3. 对比短期收益与长期代价，做取舍。
+
+## 引导问题（可直接问）
+
+- 如果你现在选 `A`，一周后会怎样？三个月后呢？
+- 这个直接好处，会不会带来隐藏代价？
+- 有没有短期更难、但长期更优的替代方案？
+
+## 输出模板（3-8行）
+
+```text
+模型：二阶思考
+决策：{{decision}}
+一阶结果：{{first_order}}
+二阶结果：{{second_order}}
+长期取舍：{{tradeoff}}
+建议动作：{{action}}
+```
+
+## 退出条件
+
+- 已产出可执行取舍结论。
+- 用户选择先记录或立刻执行。
+&lt;&lt;&lt;文件结束 references/second-order-thinking.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/socratic-questioning.md&gt;&gt;&gt;
+# 苏格拉底式提问（执行版）
+
+## 何时使用
+
+- 观点模糊、论证链条不清。
+- 需要在不直接下结论的前提下引导思考。
+- 讨论中出现“感觉对，但说不出为什么”。
+
+## 不适用
+
+- 用户只要快速结论，不愿被追问。
+- 纯事务执行，不涉及观点检验。
+
+## 最小流程（4类问题）
+
+1. 澄清定义：你说的 `X` 具体指什么？
+2. 检查假设：这个说法依赖哪些前提？
+3. 检查证据：支持/反对证据分别是什么？
+4. 检查后果：如果按此行动，会带来什么后果？
+
+## 引导问题（可直接问）
+
+- 你这里的关键词是如何定义的？
+- 如果这个前提不成立，结论还成立吗？
+- 有什么证据会让你修正这个观点？
+- 这个观点最可能在哪种情境下失效？
+
+## 输出模板（3-8行）
+
+```text
+模型：苏格拉底式提问
+被检验观点：{{claim}}
+关键假设：{{assumption}}
+证据评估：{{evidence_assessment}}
+潜在反例：{{counterexample_or_none}}
+当前结论：{{revised_conclusion}}
+```
+
+## 退出条件
+
+- 观点已从“模糊”变为“可检验”。
+- 用户说“先记下来/先到这里”。
+&lt;&lt;&lt;文件结束 references/socratic-questioning.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/spaced-repetition.md&gt;&gt;&gt;
+# 间隔复习（执行版）
+
+## 何时使用
+
+- 需要长期记忆，不想“学完即忘”。
+- 知识点多，需安排稳定复习节奏。
+
+## 不适用
+
+- 一次性任务，不需要长期保留。
+
+## 最小流程（3步）
+
+1. 列出需记忆条目。
+2. 设置间隔计划（如 D1/D3/D7/D14）。
+3. 每次复习用“主动回忆”而非重读。
+
+## 引导问题（可直接问）
+
+- 这批知识你希望保留多久？
+- 你下次复习具体安排在哪天？
+
+## 输出模板（3-8行）
+
+```text
+模型：间隔复习
+主题：{{topic}}
+复习节奏：{{schedule}}
+关键条目：{{items}}
+执行提醒：{{reminder}}
+```
+&lt;&lt;&lt;文件结束 references/spaced-repetition.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/sq3r.md&gt;&gt;&gt;
+# SQ3R 阅读法（执行版）
+
+## 何时使用
+
+- 读完容易忘，理解不成体系。
+- 需要把长文转成可复述要点。
+
+## 不适用
+
+- 极短文本快速浏览。
+
+## 最小流程（5步）
+
+1. Survey：先扫结构与小标题。
+2. Question：把每节转成问题。
+3. Read：带问题阅读。
+4. Recite：合上资料复述要点。
+5. Review：24小时内回顾并补漏。
+
+## 引导问题（可直接问）
+
+- 这节内容最关键的问题是什么？
+- 不看原文，你能复述三条要点吗？
+
+## 输出模板（3-8行）
+
+```text
+模型：SQ3R
+章节：{{section}}
+关键问题：{{questions}}
+复述要点：{{recite_points}}
+回顾计划：{{review_plan}}
+```
+&lt;&lt;&lt;文件结束 references/sq3r.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/steelman.md&gt;&gt;&gt;
+# 钢人化（执行版）
+
+## 何时使用
+
+- 与某观点对立，担心“稻草人”误判。
+- 需要公平比较两种立场。
+
+## 不适用
+
+- 用户只要快速决策，不做辩论质量提升。
+
+## 最小流程（3步）
+
+1. 先重写对方观点为“最强版本”。
+2. 验证对方是否会认可该重写。
+3. 在最强版本基础上再提出反驳。
+
+## 引导问题（可直接问）
+
+- 如果你替对方辩护，最强论点会是什么？
+- 对方会认可你这版重述吗？
+
+## 输出模板（3-8行）
+
+```text
+模型：钢人化
+原始观点：{{original_claim}}
+最强重述：{{steelman_claim}}
+可认可点：{{valid_points}}
+你的回应：{{response}}
+```
+&lt;&lt;&lt;文件结束 references/steelman.md&gt;&gt;&gt;
+
+&lt;&lt;&lt;文件开始 references/zettelkasten-linking.md&gt;&gt;&gt;
+# Zettelkasten连接（执行版）
+
+## 何时使用
+
+- 新卡片形成后，不知道如何连接旧知识。
+- 笔记成为孤岛，难以触发复用。
+
+## 不适用
+
+- 临时记录尚未成型。
+
+## 最小流程（3步）
+
+1. 找 2-3 张相关旧卡片。
+2. 明确关系类型（支持/反对/补充/迁移）。
+3. 回写双向链接并标注关系说明。
+
+## 引导问题（可直接问）
+
+- 这条新卡片支持或反对了哪条旧观点？
+- 这条卡片在未来最可能被谁调用？
+
+## 输出模板（3-8行）
+
+```text
+模型：Zettelkasten连接
+新卡片：{{new_note}}
+候选旧卡：{{related_notes}}
+关系说明：{{relation_types}}
+回写链接：{{link_actions}}
+```
+&lt;&lt;&lt;文件结束 references/zettelkasten-linking.md&gt;&gt;&gt;
+</code></pre><button class="expand" type="button" data-more="展开全文" data-less="收起">展开全文</button></figure>
+</div></section><section class="info-grid"><div class="info-card"><h2 class="serif">适用场景</h2><p>刚读完一篇文章、一章书，或者看完一段课程，想确认自己是不是真的学会了。</p></div><div class="info-card steps"><h2 class="serif">使用方法</h2><ol><li>先自己把材料看一遍，再发提示词。不要先让 AI 总结。</li><li>回答时不看材料。想不起来也先猜一个，再看答案。</li><li>隔一两天，把上次答错的题发给 AI，让它换个场景再考一次。</li></ol>
+<p>想要一问一答、更完整的引导，可以用 <a href="https://github.com/ahao-learn/ahao-learn-toolkit/blob/main/skills/thinking-coach/SKILL.md"><code>skills/thinking-coach</code></a>。</p></div></section><nav class="pager"><a href="/01/"><small>← 上一期 · No.01</small><span>用AI做的东西，为什么总没人用</span></a><a class="next" href="/03/"><small>下一期 · No.03 →</small><span>躺了一整天，为什么比上班还累？</span></a></nav></div>
+</main>
+<footer class="footer"><div class="wrap">
+<div class="footer-top">
+<div class="footer-brand"><img src="/static/logo.jpg" alt="" width="44" height="44"><div><strong class="serif">AI 时代的成长说明书</strong><span>收录视频配套的提示词与 Skill。</span></div></div>
+<div class="footer-right"><div class="footer-social"><a class="social social-sm" style="--brand:#00A1D6" aria-label="B站" data-label="B站" href="https://space.bilibili.com/24543451"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373Z"/></svg></a><a class="social social-sm" style="--brand:#111111" aria-label="抖音" data-label="抖音" href="https://www.douyin.com/user/MS4wLjABAAAApWkfXTrgseEIiD5yU4pD5u6qmvt3bE1D07LVdMyO8pk"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a><a class="social social-sm" style="--brand:#FF0000" aria-label="YouTube" data-label="YouTube" href="https://www.youtube.com/channel/UCqQJ0iJK4RZ1gqspvRXNh_g"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a><a class="social social-sm" style="--brand:#FF2442" aria-label="小红书" data-label="小红书" href="https://www.xiaohongshu.com/user/profile/633bc4d5000000001802bcb9"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.405 9.879c.002.016.01.02.07.019h.725a.797.797 0 0 0 .78-.972.794.794 0 0 0-.884-.618.795.795 0 0 0-.692.794c0 .101-.002.666.001.777zm-11.509 4.808c-.203.001-1.353.004-1.685.003a2.528 2.528 0 0 1-.766-.126.025.025 0 0 0-.03.014L7.7 16.127a.025.025 0 0 0 .01.032c.111.06.336.124.495.124.66.01 1.32.002 1.981 0 .01 0 .02-.006.023-.015l.712-1.545a.025.025 0 0 0-.024-.036zM.477 9.91c-.071 0-.076.002-.076.01a.834.834 0 0 0-.01.08c-.027.397-.038.495-.234 3.06-.012.24-.034.389-.135.607-.026.057-.033.042.003.112.046.092.681 1.523.787 1.74.008.015.011.02.017.02.008 0 .033-.026.047-.044.147-.187.268-.391.371-.606.306-.635.44-1.325.486-1.706.014-.11.021-.22.03-.33l.204-2.616.022-.293c.003-.029 0-.033-.03-.034zm7.203 3.757a1.427 1.427 0 0 1-.135-.607c-.004-.084-.031-.39-.235-3.06a.443.443 0 0 0-.01-.082c-.004-.011-.052-.008-.076-.008h-1.48c-.03.001-.034.005-.03.034l.021.293c.076.982.153 1.964.233 2.946.05.4.186 1.085.487 1.706.103.215.223.419.37.606.015.018.037.051.048.049.02-.003.742-1.642.804-1.765.036-.07.03-.055.003-.112zm3.861-.913h-.872a.126.126 0 0 1-.116-.178l1.178-2.625a.025.025 0 0 0-.023-.035l-1.318-.003a.148.148 0 0 1-.135-.21l.876-1.954a.025.025 0 0 0-.023-.035h-1.56c-.01 0-.02.006-.024.015l-.926 2.068c-.085.169-.314.634-.399.938a.534.534 0 0 0-.02.191.46.46 0 0 0 .23.378.981.981 0 0 0 .46.119h.59c.041 0-.688 1.482-.834 1.972a.53.53 0 0 0-.023.172.465.465 0 0 0 .23.398c.15.092.342.12.475.12l1.66-.001c.01 0 .02-.006.023-.015l.575-1.28a.025.025 0 0 0-.024-.035zm-6.93-4.937H3.1a.032.032 0 0 0-.034.033c0 1.048-.01 2.795-.01 6.829 0 .288-.269.262-.28.262h-.74c-.04.001-.044.004-.04.047.001.037.465 1.064.555 1.263.01.02.03.033.051.033.157.003.767.009.938-.014.153-.02.3-.06.438-.132.3-.156.49-.419.595-.765.052-.172.075-.353.075-.533.002-2.33 0-4.66-.007-6.991a.032.032 0 0 0-.032-.032zm11.784 6.896c0-.014-.01-.021-.024-.022h-1.465c-.048-.001-.049-.002-.05-.049v-4.66c0-.072-.005-.07.07-.07h.863c.08 0 .075.004.075-.074V8.393c0-.082.006-.076-.08-.076h-3.5c-.064 0-.075-.006-.075.073v1.445c0 .083-.006.077.08.077h.854c.075 0 .07-.004.07.07v4.624c0 .095.008.084-.085.084-.37 0-1.11-.002-1.304 0-.048.001-.06.03-.06.03l-.697 1.519s-.014.025-.008.036c.006.01.013.008.058.008 1.748.003 3.495.002 5.243.002.03-.001.034-.006.035-.033v-1.539zm4.177-3.43c0 .013-.007.023-.02.024-.346.006-.692.004-1.037.004-.014-.002-.022-.01-.022-.024-.005-.434-.007-.869-.01-1.303 0-.072-.006-.071.07-.07l.733-.003c.041 0 .081.002.12.015.093.025.16.107.165.204.006.431.002 1.153.001 1.153zm2.67.244a1.953 1.953 0 0 0-.883-.222h-.18c-.04-.001-.04-.003-.042-.04V10.21c0-.132-.007-.263-.025-.394a1.823 1.823 0 0 0-.153-.53 1.533 1.533 0 0 0-.677-.71 2.167 2.167 0 0 0-1-.258c-.153-.003-.567 0-.72 0-.07 0-.068.004-.068-.065V7.76c0-.031-.01-.041-.046-.039H17.93s-.016 0-.023.007c-.006.006-.008.012-.008.023v.546c-.008.036-.057.015-.082.022h-.95c-.022.002-.028.008-.03.032v1.481c0 .09-.004.082.082.082h.913c.082 0 .072.128.072.128V11.19s.003.117-.06.117h-1.482c-.068 0-.06.082-.06.082v1.445s-.01.068.064.068h1.457c.082 0 .076-.006.076.079v3.225c0 .088-.007.081.082.081h1.43c.09 0 .082.007.082-.08v-3.27c0-.029.006-.035.033-.035l2.323-.003c.098 0 .191.02.28.061a.46.46 0 0 1 .274.407c.008.395.003.79.003 1.185 0 .259-.107.367-.33.367h-1.218c-.023.002-.029.008-.028.033.184.437.374.871.57 1.303a.045.045 0 0 0 .04.026c.17.005.34.002.51.003.15-.002.517.004.666-.01a2.03 2.03 0 0 0 .408-.075c.59-.18.975-.698.976-1.313v-1.981c0-.128-.01-.254-.034-.38 0 .078-.029-.641-.724-.998z"/></svg></a><button class="social social-sm" style="--brand:#FA9D3B" aria-label="视频号" data-label="视频号" type="button" data-qr="qr-4"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.1 5.5c-2.6 0-4.6 2.3-4.6 5.4 0 3.6 2.4 7.6 5 7.6 1.6 0 2.9-1.4 4.5-4.2 1.6 2.8 2.9 4.2 4.5 4.2 2.6 0 5-4 5-7.6 0-3.1-2-5.4-4.6-5.4-2.1 0-3.6 1.6-4.9 4.3C10.7 7.1 9.2 5.5 7.1 5.5Zm0 2.2c1.2 0 2.3 1.4 3.6 4.4-1.3 2.9-2.4 4.2-3.2 4.2-1.2 0-2.8-2.9-2.8-5.4 0-1.9 1-3.2 2.4-3.2Zm9.8 0c1.4 0 2.4 1.3 2.4 3.2 0 2.5-1.6 5.4-2.8 5.4-.8 0-1.9-1.3-3.2-4.2 1.3-3 2.4-4.4 3.6-4.4Z"/></svg>
+</button><button class="social social-sm" style="--brand:#07C160" aria-label="公众号" data-label="公众号" type="button" data-qr="qr-5"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.582.582 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/></svg></button></div>
+<div class="footer-links"><a href="https://github.com/ahao-learn/ahao-learn-toolkit">GitHub</a><a href="https://cnb.cool/ahao-learn/ahao-learn-toolkit">CNB 国内镜像</a><a href="https://github.com/1095327780/FLOWnote">FLOWnote</a></div></div>
+</div>
+<p class="fine">© 2026 阿浩_Learn · 提示词和 Skill 以 MIT 许可开源</p>
+</div></footer>
+<dialog class="qr" id="qr-4" aria-label="视频号二维码"><button class="qr-close" type="button" aria-label="关闭">×</button><p class="qr-title"><b>视频号</b>阿浩Learn</p><img src="/static/accounts/wechat-channels.jpg" alt="视频号「阿浩Learn」二维码"><p class="qr-tip">微信扫一扫，关注视频号<br><small>在手机微信里打开本页时，长按二维码识别</small></p></dialog><dialog class="qr" id="qr-5" aria-label="公众号二维码"><button class="qr-close" type="button" aria-label="关闭">×</button><p class="qr-title"><b>公众号</b>阿浩Learn</p><img src="/static/accounts/wechat-mp.jpg" alt="公众号「阿浩Learn」二维码"><p class="qr-tip">微信扫一扫，关注公众号<br><small>在手机微信里打开本页时，长按二维码识别</small></p></dialog>
+<script src="/static/site.js"></script>
+</body>
+</html>
