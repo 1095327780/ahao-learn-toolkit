@@ -29,14 +29,18 @@ jobs:
           pip install fonttools brotli
           python3 site/build.py
       - name: Push the built site to the site-dist branch (EdgeOne Pages deploys from it, no build step there)
+        # a normal fast-forward commit on top of the branch, so EdgeOne's Git integration sees an ordinary push
         run: |
-          cd dist
-          git init -q -b site-dist
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git clone -q --depth 1 --branch site-dist "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ../site-dist
+          find ../site-dist -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -R dist/. ../site-dist/
+          cd ../site-dist
           git add -A
+          git diff --cached --quiet && { echo "site unchanged"; exit 0; }
           git commit -q -m "Build ${GITHUB_SHA::7}"
-          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" site-dist
+          git push -q origin site-dist
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
