@@ -25,7 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build
-        run: python3 site/build.py
+        run: |
+          pip install fonttools brotli
+          python3 site/build.py
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

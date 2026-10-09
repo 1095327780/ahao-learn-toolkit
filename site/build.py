@@ -1,37 +1,53 @@
 #!/usr/bin/env python3
 """Build the static site for www.ahaolearn.com from this repo.
 
-Reads site/episodes.json, renders each episode's prompt file (Markdown) into a page,
-zips each skill folder for download, and writes everything to dist/.
-No third-party packages, so GitHub Actions / EdgeOne Pages can run it as is:
+Reads site/episodes.json, renders each episode page (with its prompt file and skills when it has them),
+zips each skill folder for download, subsets the heading font to the characters actually used,
+and writes everything to dist/. Standard library only; fontTools is optional (see subset_font).
 
     python3 site/build.py            # published episodes only
     python3 site/build.py --drafts   # also build episodes marked "draft" (local preview)
 """
 import argparse
 import html
-import posixpath
 import json
+import os
+import posixpath
 import re
 import shutil
+import urllib.request
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
+DIST = ROOT / "dist"
 GITHUB = "https://github.com/1095327780/ahao-learn-toolkit"
 CNB = "https://cnb.cool/ahao-learn/ahao-learn-toolkit"
+# 思源宋体 Heavy (SIL OFL). Used for headings only, subset per build so the page stays light.
+SERIF_URL = "https://github.com/adobe-fonts/source-han-serif/raw/release/SubsetOTF/CN/SourceHanSerifCN-Heavy.otf"
+SERIF_CACHE = ROOT / ".cache" / "SourceHanSerifCN-Heavy.otf"
+LINKS = {}
 
+esc = html.escape
+serif_text = set()  # every character that may be set in the heading font
+
+
+def serif(text):
+    """Mark text as set in the heading font, so the subsetter keeps its glyphs."""
+    serif_text.update(text)
+    return esc(text)
+
+
+# ---------- Markdown ----------
 
 def inline(text):
-    """Escape, then apply the few inline Markdown forms our files use."""
-    t = html.escape(text)
+    t = esc(text)
     t = re.sub(r"`([^`]+)`", r"<code>\1</code>", t)
     t = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", t)
 
     def link(m):
         label, href = m.group(1), m.group(2)
-        # links into the repo point at GitHub; the site only hosts the rendered pages
         if not href.startswith(("http://", "https://", "#", "/")):
             href = f"{GITHUB}/blob/main/" + posixpath.normpath(posixpath.join("prompts", href))
         return f'<a href="{href}">{label}</a>'
@@ -39,11 +55,25 @@ def inline(text):
     return re.sub(r"\[([^\]]+)\]\(([^)]+)\)", link, t)
 
 
-def markdown(md, skip_title=True):
-    """Tiny Markdown renderer: headings, paragraphs, lists, fenced code (with copy button)."""
+def prompt_sections(md):
+    """Split a prompt file into {heading: body_markdown}; the H1 becomes '_title'."""
+    sections, current, buf = {}, None, []
+    for line in md.splitlines():
+        if m := re.match(r"^#\s+(.*)", line):
+            sections["_title"] = m.group(1).strip()
+        elif m := re.match(r"^##\s+(.*)", line):
+            if current is not None:
+                sections[current] = "\n".join(buf).strip()
+            current, buf = m.group(1).strip(), []
+        elif current is not None:
+            buf.append(line)
+    if current is not None:
+        sections[current] = "\n".join(buf).strip()
+    return sections
+
+
+def markdown(md):
     out, para, items, list_tag = [], [], [], None
-    lines = md.splitlines()
-    i = 0
 
     def flush():
         nonlocal para, items, list_tag
@@ -54,6 +84,7 @@ def markdown(md, skip_title=True):
             out.append(f"<{list_tag}>" + "".join(f"<li>{inline(x)}</li>" for x in items) + f"</{list_tag}>")
             items, list_tag = [], None
 
+    lines, i = md.splitlines(), 0
     while i < len(lines):
         line = lines[i]
         if line.startswith("```"):
@@ -63,16 +94,10 @@ def markdown(md, skip_title=True):
             while i < len(lines) and not lines[i].startswith("```"):
                 block.append(lines[i])
                 i += 1
-            code = html.escape("\n".join(block))
-            out.append(
-                '<div class="code"><button class="copy" type="button">复制全文</button>'
-                f"<pre><code>{code}</code></pre></div>"
-            )
-        elif m := re.match(r"^(#{1,3})\s+(.*)", line):
+            out.append(code_block("\n".join(block)))
+        elif m := re.match(r"^(#{3,4})\s+(.*)", line):
             flush()
-            level = len(m.group(1))
-            if not (skip_title and level == 1):
-                out.append(f"<h{level + 1}>{inline(m.group(2))}</h{level + 1}>")
+            out.append(f"<h4>{inline(m.group(2))}</h4>")
         elif m := re.match(r"^\s*(?:[-*]|\d+\.)\s+(.*)", line):
             tag = "ol" if re.match(r"^\s*\d+\.", line) else "ul"
             if para or (list_tag and list_tag != tag):
@@ -90,114 +115,318 @@ def markdown(md, skip_title=True):
     return "\n".join(out)
 
 
-def page(title, body, description, depth):
-    up = "/"  # the site lives at the domain root
+def code_block(text, label="提示词"):
+    return (
+        '<figure class="doc"><figcaption><span class="dots"><i></i><i></i><i></i></span>'
+        f'<span>{esc(label)}</span><button class="copy" type="button">复制全文</button></figcaption>'
+        f"<pre><code>{esc(text)}</code></pre></figure>"
+    )
+
+
+# ---------- layout ----------
+
+def page(title, body, description):
+    nav = "".join(f'<a href="{href}">{label}</a>' for href, label in [("/#toc", "目录"), ("/#tools", "工具箱"), ("/#about", "关于")])
     return f"""<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{html.escape(title)}</title>
-<meta name="description" content="{html.escape(description)}">
-<link rel="icon" href="{up}static/favicon.jpg">
-<link rel="stylesheet" href="{up}static/style.css">
+<title>{esc(title)}</title>
+<meta name="description" content="{esc(description)}">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(description)}">
+<meta name="theme-color" content="#0B1470">
+<link rel="icon" href="/static/favicon.jpg">
+<link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<header class="top"><a class="brand" href="{up}"><img src="{up}static/logo.jpg" alt="" width="36" height="36"><span>阿浩_Learn</span></a><span class="slogan">AI 时代的成长说明书</span></header>
-<main>
+<header class="nav"><div class="wrap nav-inner">
+<a class="brand" href="/"><img src="/static/logo.jpg" alt="" width="34" height="34"><span>阿浩_Learn</span></a>
+<nav class="nav-links">{nav}</nav>
+<a class="nav-cta" href="{LINKS['B站']}">B站主页</a>
+</div></header>
 {body}
-</main>
-<footer>
-<p>视频里用到的提示词和 Skill 都放在这里，免费拿去用，不用关注、不用留言。</p>
-<p>源文件：<a href="{GITHUB}">GitHub</a> · <a href="{CNB}">CNB 国内镜像</a></p>
-</footer>
-<script src="{up}static/copy.js"></script>
+<footer class="footer"><div class="wrap">
+<div class="footer-top">
+<div class="footer-brand"><img src="/static/logo.jpg" alt="" width="44" height="44"><div><strong class="serif">{serif('AI 时代的成长说明书')}</strong><span>视频里用到的提示词和 Skill 都放在这里，免费拿去用，不用关注、不用留言。</span></div></div>
+<div class="footer-links">{''.join(f'<a href="{url}">{esc(name)}</a>' for name, url in LINKS.items())}</div>
+</div>
+<p class="fine">© 2026 阿浩_Learn · 提示词和 Skill 以 MIT 许可开源</p>
+</div></footer>
+<script src="/static/site.js"></script>
 </body>
 </html>
 """
 
 
-def zip_skill(name, dist):
+def badge(ep, vol):
+    return (
+        f'<span class="badge" style="--c:{vol["color"]}"><span>成长说明书<b>No.{ep["no"]}</b></span>'
+        f'<em>{esc(vol["name"])}</em></span>'
+    )
+
+
+def tool_chips(ep):
+    chips = []
+    if ep.get("prompt"):
+        chips.append('<span class="chip">提示词</span>')
+    if ep.get("skills"):
+        chips.append('<span class="chip">Skill</span>')
+    return "".join(chips)
+
+
+# ---------- pages ----------
+
+def zip_skill(name):
     src = ROOT / "skills" / name
-    target = dist / "downloads" / f"{name}.zip"
+    target = DIST / "downloads" / f"{name}.zip"
     target.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as z:
         for f in sorted(src.rglob("*")):
             if f.is_file() and f.name != ".DS_Store":
                 z.write(f, Path(name) / f.relative_to(src))
-    return target
+    return target.stat().st_size
 
 
-def skill_title(name):
+def skill_meta(name):
     text = (ROOT / "skills" / name / "SKILL.md").read_text(encoding="utf-8")
-    m = re.search(r"^#\s+(.+)$", text, re.M)
-    return m.group(1).strip() if m else name
+    title = re.search(r"^#\s+(.+)$", text, re.M)
+    goal = re.search(r"^目标：(.+)$", text, re.M)
+    return (title.group(1).strip() if title else name), (goal.group(1).strip() if goal else "")
 
+
+def episode_page(ep, vol, older, newer):
+    has_tools = bool(ep.get("prompt") or ep.get("skills"))
+    sec = prompt_sections((ROOT / ep["prompt"]).read_text(encoding="utf-8")) if ep.get("prompt") else {}
+    heading = sec.get("_title", ep["title"])
+    video_url = next(iter(ep["videos"].values()), None)
+    video_links = "".join(f'<a class="btn btn-ghost" href="{esc(u)}">在{esc(k)}看视频</a>' for k, u in ep["videos"].items())
+    if ep.get("cover"):
+        cover = (f'<a class="ep-cover" href="{esc(video_url or "#")}"><img src="/static/{ep["cover"]}" alt="{esc(ep["title"])} 封面">'
+                 '<span class="play" aria-hidden="true"></span></a>')
+    else:
+        cover = (f'<div class="ep-cover"><div class="ep-cover-soon"><span class="serif">{serif("No." + ep["no"])}</span>'
+                 f'<small>{esc(vol["name"])} · 视频即将发布</small></div></div>')
+
+    blocks, toc = [], []
+    if ep.get("prompt"):
+        prompt_key = next((k for k in sec if k.startswith("提示词")), "")
+        note = prompt_key[len("提示词"):].strip("（）() ")
+        code = re.search(r"```(?:text)?\n(.*?)```", sec.get(prompt_key, ""), re.S)
+        toc += [("when", "什么时候用"), ("prompt", "提示词")]
+        blocks.append(f'<section id="when" class="block"><h2 class="serif">{serif("什么时候用")}</h2>{markdown(sec.get("什么时候用", ""))}</section>')
+        blocks.append(
+            f'<section id="prompt" class="block"><h2 class="serif">{serif("提示词")}</h2>'
+            f'<p class="muted">{esc(note) if note else "复制全文，发给你常用的 AI。"}</p>'
+            f'{code_block(code.group(1).rstrip() if code else sec.get(prompt_key, ""))}</section>'
+        )
+        if sec.get("用法"):
+            toc.append(("how", "怎么用"))
+            blocks.append(f'<section id="how" class="block steps"><h2 class="serif">{serif("怎么用")}</h2>{markdown(sec["用法"])}</section>')
+    for name in ep.get("skills", []):
+        size = zip_skill(name)
+        title, goal = skill_meta(name)
+        install = (
+            f"帮我安装这个 Skill：{GITHUB}/tree/main/skills/{name}\n"
+            f"（国内打不开 GitHub 的话，用这个地址：{CNB}）\n"
+            "装到你的 Skill 目录（Claude Code 是 ~/.claude/skills/），装好后告诉我怎么用。"
+        )
+        toc.append((f"skill-{name}", f"Skill 版"))
+        blocks.append(f"""<section id="skill-{name}" class="block skill-card">
+<div class="skill-head"><span class="chip chip-solid">Skill</span><h2 class="serif">{serif(title)}</h2></div>
+<p>{esc(goal)}</p>
+<p class="muted">给 Claude Code、Codex、Cursor 这类 AI agent 用。下载后解压到 Skill 目录；或者把下面这段发给你的 agent，让它帮你装。</p>
+<div class="actions"><a class="btn" href="/downloads/{name}.zip" download>下载 {name}.zip</a><span class="muted small">{size / 1024:.1f} KB · 源文件在 <a href="{GITHUB}/tree/main/skills/{name}">GitHub</a> / <a href="{CNB}">CNB</a></span></div>
+{code_block(install, "安装说明")}
+</section>""")
+    if sec.get("背后的依据"):
+        toc.append(("refs", "背后的依据"))
+        blocks.append(f'<section id="refs" class="block refs"><h2 class="serif">{serif("背后的依据")}</h2>{markdown(sec["背后的依据"])}</section>')
+    if not has_tools:
+        points = "".join(f"<li>{esc(x)}</li>" for x in ep.get("points", []))
+        blocks.append(f'<section class="block steps"><h2 class="serif">{serif("观看要点")}</h2>'
+                      + (f"<ol>{points}</ol>" if points else "")
+                      + '<p class="muted note">这一期没有单独的提示词或 Skill，方法都在视频里讲完了。</p></section>')
+
+    pager = '<nav class="pager">' + (
+        f'<a href="/{older["no"]}/"><small>← 上一期 · No.{older["no"]}</small><span>{esc(older["title"])}</span></a>' if older else "<span></span>"
+    ) + (
+        f'<a class="next" href="/{newer["no"]}/"><small>下一期 · No.{newer["no"]} →</small><span>{esc(newer["title"])}</span></a>' if newer else "<span></span>"
+    ) + "</nav>"
+    aside_toc = "".join(f'<a href="#{i}">{esc(t)}</a>' for i, t in toc)
+    primary = '<a class="btn" href="#prompt">拿提示词</a>' if ep.get("prompt") else ""
+
+    body = f"""
+<main class="episode" style="--c:{vol['color']}">
+<section class="ep-hero"><div class="wrap ep-hero-grid">
+<div class="ep-hero-copy">
+<p class="crumbs"><a href="/#toc">目录</a><span>/</span><a href="/#vol-{vol['short']}">{esc(vol['name'])}</a><span>/</span><span>No.{ep['no']}</span></p>
+{badge(ep, vol)}
+<h1 class="serif">{serif(heading)}</h1>
+<p class="ep-video">对应视频：{esc(ep['title'])}{('　' + ep['date']) if ep.get('date') else ''}</p>
+<p class="ep-summary">{esc(ep['summary'])}</p>
+<div class="actions">{primary}{video_links}</div>
+</div>
+{cover}
+</div></section>
+<div class="wrap ep-body">
+<article class="ep-main">{''.join(blocks)}{pager}</article>
+<aside class="ep-aside"><div class="aside-card">
+{('<p class="aside-title">本页</p><div class="aside-toc">' + aside_toc + '</div>') if aside_toc else ''}
+<dl><dt>编号</dt><dd>No.{ep['no']}</dd><dt>分册</dt><dd>{esc(vol['name'])}</dd><dt>工具</dt><dd>{tool_chips(ep) or '—'}</dd><dt>费用</dt><dd>免费，无门槛</dd></dl>
+</div></aside>
+</div>
+</main>"""
+    return page(f"{heading}｜阿浩_Learn", body, ep["summary"])
+
+
+def home_page(episodes, volumes):
+    vols = {v["name"]: v for v in volumes}
+    published = [e for e in episodes if e.get("cover")]
+    latest = episodes[0]
+    lv = vols[latest["volume"]]
+    stack = "".join(f'<img src="/static/{e["cover"]}" alt="" style="--i:{i}">' for i, e in enumerate(published[:3]))
+
+    def row(e):
+        v = vols[e["volume"]]
+        return (
+            f'<a class="toc-row" href="/{e["no"]}/" style="--c:{v["color"]}"><span class="toc-no">No.{e["no"]}</span>'
+            f'<span class="toc-title">{esc(e["title"])}</span><span class="toc-leader"></span>'
+            f'<span class="toc-vol"><i></i>{esc(v["short"])}</span><span class="toc-tools">{tool_chips(e)}</span>'
+            f'<span class="toc-date">{e.get("date", "即将发布")}</span></a>'
+        )
+
+    vol_cards = ""
+    for v in volumes:
+        count = sum(1 for e in episodes if e["volume"] == v["name"])
+        status = "即将开放" if v.get("upcoming") else f"{count} 期"
+        vol_cards += (
+            f'<div class="vol{" vol-soon" if v.get("upcoming") else ""}" id="vol-{v["short"]}" style="--c:{v["color"]}">'
+            f'<span class="vol-bar"></span><h3 class="serif">{serif(v["name"])}</h3><p>{esc(v["about"])}</p><small>{status}</small></div>'
+        )
+
+    tools = ""
+    for e in episodes:
+        if not (e.get("prompt") or e.get("skills")):
+            continue
+        v = vols[e["volume"]]
+        name = prompt_sections((ROOT / e["prompt"]).read_text(encoding="utf-8")).get("_title", e["title"]) if e.get("prompt") else e["title"]
+        tools += (
+            f'<a class="tool" href="/{e["no"]}/" style="--c:{v["color"]}"><div class="tool-top">{badge(e, v)}<span class="tool-chips">{tool_chips(e)}</span></div>'
+            f'<h3 class="serif">{serif(name)}</h3><p>{esc(e["summary"])}</p><span class="tool-go">打开 →</span></a>'
+        )
+
+    latest_art = (f'<img src="/static/{latest["cover"]}" alt="">' if latest.get("cover")
+                  else f'<div class="feature-soon"><span class="serif">{serif("No." + latest["no"])}</span><small>视频即将发布</small></div>')
+    body = f"""
+<main>
+<section class="hero"><div class="wrap hero-grid">
+<div class="hero-copy">
+<p class="eyebrow">阿浩_Learn · 视频配套工具箱</p>
+<h1 class="serif">{serif('AI 时代的')}<br><mark>{serif('成长说明书')}</mark></h1>
+<p class="lead">大脑、注意力、情绪、判断力，这些东西你天天在用，却没人教过你怎么用。每期视频讲清一个卡住你的时刻，能做成工具的，就做成提示词和 Skill 放在这里。</p>
+<div class="actions"><a class="btn btn-light" href="#tools">打开工具箱</a><a class="btn btn-outline" href="{LINKS['B站']}">去B站看视频</a></div>
+<dl class="stats"><div><dt>{len(published)}</dt><dd>期已发布</dd></div><div><dt>5</dt><dd>本分册</dd></div><div><dt>0</dt><dd>领取门槛</dd></div></dl>
+</div>
+<div class="hero-art" aria-hidden="true">{stack}</div>
+</div></section>
+
+<section class="section" id="latest"><div class="wrap">
+<a class="feature" href="/{latest['no']}/" style="--c:{lv['color']}">
+<div class="feature-copy"><p class="kicker">最新一期</p>{badge(latest, lv)}<h2 class="serif">{serif(latest['title'])}</h2><p>{esc(latest['summary'])}</p>
+<span class="btn">{'拿这期的工具' if latest.get('prompt') else '查看这一期'}</span></div>
+<div class="feature-art">{latest_art}</div>
+</a>
+</div></section>
+
+<section class="section" id="toc"><div class="wrap">
+<div class="section-head"><p class="kicker">目录</p><h2 class="serif">{serif('全部期')}</h2><p>编号全账号连续，每一期都能在B站看完整版。</p></div>
+<div class="toc">{''.join(row(e) for e in episodes)}</div>
+</div></section>
+
+<section class="section section-alt"><div class="wrap">
+<div class="section-head"><p class="kicker">分册</p><h2 class="serif">{serif('五本使用说明')}</h2><p>这些东西你天天在用，但没人教过你怎么用。每一期属于其中一本。</p></div>
+<div class="vols">{vol_cards}</div>
+</div></section>
+
+<section class="section" id="tools"><div class="wrap">
+<div class="section-head"><p class="kicker">工具箱</p><h2 class="serif">{serif('拿去就能用')}</h2><p>提示词复制给任何 AI 都能用：豆包、DeepSeek、Kimi、ChatGPT、Claude。Skill 给 AI agent 用。</p></div>
+<div class="tools">{tools}</div>
+<ol class="how">
+<li><b class="serif">{serif('复制')}</b><span>在每期页面点“复制全文”，拿到完整提示词。</span></li>
+<li><b class="serif">{serif('发给 AI')}</b><span>贴给你常用的 AI，再用一两句话说说你的情况。</span></li>
+<li><b class="serif">{serif('做一小步')}</b><span>它会帮你把方法落到你自己身上，做完一步就算赢。</span></li>
+</ol>
+</div></section>
+
+<section class="section section-alt" id="about"><div class="wrap about">
+<img src="/static/logo.jpg" alt="阿浩_Learn" width="112" height="112">
+<div><p class="kicker">关于</p><h2 class="serif">{serif('我是阿浩')}</h2>
+<p>用心理学和脑科学研究，讲清学习、注意力、情绪、判断里那些卡住你的时刻，以及接下来怎么办。每个说法尽量找到一手研究，找不到的，会直说。</p>
+<p>我也在做 Obsidian 插件 <a href="{LINKS['FLOWnote']}">FLOWnote</a>，FLOW 笔记法的内容也在B站。</p>
+<div class="actions"><a class="btn" href="{LINKS['B站']}">B站主页</a><a class="btn btn-ghost" href="{LINKS['GitHub']}">GitHub</a></div></div>
+</div></section>
+</main>"""
+    return page("阿浩_Learn｜AI 时代的成长说明书", body, "阿浩_Learn：AI 时代的成长说明书。每期视频配套的提示词和 Skill，免费拿去用。")
+
+
+# ---------- font ----------
+
+def subset_font():
+    """Subset 思源宋体 Heavy to the characters used in headings. Skips quietly if fontTools or the font
+    is unavailable; the CSS then falls back to the system serif."""
+    try:
+        from fontTools import subset
+    except ImportError:
+        print("fontTools not installed; headings use the system serif")
+        return
+    src = Path(os.environ.get("SERIF_FONT", SERIF_CACHE))
+    if not src.exists():
+        try:
+            src.parent.mkdir(parents=True, exist_ok=True)
+            urllib.request.urlretrieve(SERIF_URL, src)
+        except Exception as e:  # offline build: keep going without the web font
+            print(f"could not fetch heading font ({e}); headings use the system serif")
+            return
+    text = "".join(sorted(serif_text | set("0123456789No.·、，。？！：（）“”")))
+    out = DIST / "static" / "serif.woff2"
+    opts = subset.Options()
+    opts.flavor = "woff2"
+    font = subset.load_font(str(src), opts)
+    sub = subset.Subsetter(opts)
+    sub.populate(text=text)
+    sub.subset(font)
+    subset.save_font(font, str(out), opts)
+    print(f"heading font: {len(text)} glyphs, {out.stat().st_size / 1024:.0f} KB")
+
+
+# ---------- main ----------
 
 def build(drafts):
-    dist = ROOT / "dist"
-    shutil.rmtree(dist, ignore_errors=True)
-    shutil.copytree(SITE / "static", dist / "static")
-    episodes = json.loads((SITE / "episodes.json").read_text(encoding="utf-8"))
-    episodes = [e for e in episodes if drafts or not e.get("draft")]
+    data = json.loads((SITE / "episodes.json").read_text(encoding="utf-8"))
+    LINKS.update(data["links"])
+    volumes = data["volumes"]
+    vols = {v["name"]: v for v in volumes}
+    episodes = [e for e in data["episodes"] if drafts or not e.get("draft")]
 
-    cards = []
-    for ep in episodes:
-        md = (ROOT / ep["prompt"]).read_text(encoding="utf-8")
-        md = re.sub(r"^对应视频：.*\n", "", md, flags=re.M)  # the page header already says which video
-        heading = re.search(r"^#\s+(.+)$", md, re.M).group(1)
-        videos = "".join(
-            f'<a class="pill" href="{html.escape(url)}">在{html.escape(name)}看视频</a>' for name, url in ep["videos"].items()
-        )
-        skills = ""
-        for name in ep["skills"]:
-            zip_skill(name, dist)
-            install = (
-                f"帮我安装这个 Skill：{GITHUB}/tree/main/skills/{name}\n"
-                f"（国内打不开 GitHub 就用 {CNB}）\n"
-                "装到你的 Skill 目录（Claude Code 是 ~/.claude/skills/），装好后告诉我怎么用。"
-            )
-            skills += f"""
-<section class="skill">
-<h2>Skill 版：{html.escape(skill_title(name))}</h2>
-<p>给 Claude Code、Codex、Cursor 这类 AI agent 用。可以直接下载压缩包，解压到 Skill 目录；也可以把下面这段发给你的 agent，让它帮你装。</p>
-<p><a class="button" href="/downloads/{name}.zip" download>下载 {name}.zip</a></p>
-<div class="code"><button class="copy" type="button">复制全文</button><pre><code>{html.escape(install)}</code></pre></div>
-</section>"""
-        body = f"""
-<article class="episode" style="--accent:{ep['color']}">
-<p class="tag"><span>成长说明书 No.{ep['no']}</span><b>{html.escape(ep['volume'])}</b></p>
-<h1>{html.escape(heading)}</h1>
-<p class="video-title">对应视频：{html.escape(ep['title'])}</p>
-<p>{videos}</p>
-{markdown(md)}
-{skills}
-<p class="back"><a href="/">← 所有期</a></p>
-</article>"""
-        out = dist / ep["no"] / "index.html"
+    shutil.rmtree(DIST, ignore_errors=True)
+    shutil.copytree(SITE / "static", DIST / "static")
+    for i, ep in enumerate(episodes):  # episodes are listed newest first
+        newer = episodes[i - 1] if i > 0 else None
+        older = episodes[i + 1] if i + 1 < len(episodes) else None
+        out = DIST / ep["no"] / "index.html"
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(page(f"{heading}｜阿浩_Learn", body, ep["summary"], 1), encoding="utf-8")
-        cards.append(
-            f'<a class="card" href="/{ep["no"]}/" style="--accent:{ep["color"]}">'
-            f'<span class="tag"><span>No.{ep["no"]}</span><b>{html.escape(ep["volume"])}</b></span>'
-            f"<strong>{html.escape(ep['title'])}</strong><span>{html.escape(ep['summary'])}</span></a>"
-        )
-
-    home = f"""
-<section class="hero">
-<h1>AI 时代的成长说明书</h1>
-<p>我是阿浩。每期视频讲清一个关于大脑、注意力、情绪、判断力的问题，能做成工具的，就做成提示词或 Skill 放在这里。</p>
-</section>
-<section class="cards">
-{''.join(cards)}
-</section>"""
-    (dist / "index.html").write_text(page("阿浩_Learn｜AI 时代的成长说明书", home, "阿浩_Learn 视频配套的提示词和 Skill，免费拿去用。", 0), encoding="utf-8")
-    (dist / "404.html").write_text(
-        page("没找到这一页｜阿浩_Learn", '<section class="hero"><h1>没找到这一页</h1><p><a href="/">回到首页</a></p></section>', "", 0),
+        out.write_text(episode_page(ep, vols[ep["volume"]], older, newer), encoding="utf-8")
+    (DIST / "index.html").write_text(home_page(episodes, volumes), encoding="utf-8")
+    (DIST / "404.html").write_text(
+        page("没找到这一页｜阿浩_Learn",
+             f'<main class="section"><div class="wrap narrow"><h1 class="serif">{serif("没找到这一页")}</h1><p><a class="btn" href="/">回到首页</a></p></div></main>', ""),
         encoding="utf-8",
     )
-    (dist / "CNAME").write_text("www.ahaolearn.com\n", encoding="utf-8")
-    print(f"built {len(episodes)} episode(s) into {dist}")
+    (DIST / "CNAME").write_text("www.ahaolearn.com\n", encoding="utf-8")
+    subset_font()
+    print(f"built {len(episodes)} episode(s) into {DIST}")
 
 
 if __name__ == "__main__":
