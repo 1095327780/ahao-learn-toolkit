@@ -396,7 +396,7 @@ def home_page(episodes, volumes):
 <div class="hero-copy">
 <p class="eyebrow">阿浩_Learn · 视频配套工具箱</p>
 <h1 class="serif">{serif('AI 时代的')}<br><mark>{serif('成长说明书')}</mark></h1>
-<p class="lead">围绕大脑、注意力、情绪与判断力，每期讲清一个日常卡点，并提供配套的提示词与 Skill。</p>
+<p class="lead">围绕大脑、注意力、情绪与判断力，每期讲清一个日常里卡住你的时刻，并提供配套的提示词与 Skill。</p>
 <div class="actions"><a class="btn btn-light" href="#tools">查看工具</a><a class="btn btn-outline" href="{primary_account()['url']}">观看视频</a></div>
 <dl class="stats"><div><dt>{len(published)}</dt><dd>期已发布</dd></div><div><dt>5</dt><dd>本分册</dd></div></dl>
 </div>
