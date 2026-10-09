@@ -19,7 +19,7 @@
 
 <!-- install-prompt -->
 ```text
-帮我安装这个仓库里的 Skill：https://github.com/1095327780/ahao-learn-toolkit
+帮我安装这个仓库里的 Skill：https://github.com/ahao-learn/ahao-learn-toolkit
 把 skills/ 下的 thinking-coach 和 procrastination-coach 文件夹装到你的 Skill 目录（Claude Code 是 ~/.claude/skills/），装好后告诉我怎么用。
 ```
 <!-- /install-prompt -->
@@ -30,7 +30,7 @@
 
 ## 仓库地址
 
-- GitHub：https://github.com/1095327780/ahao-learn-toolkit
+- GitHub：https://github.com/ahao-learn/ahao-learn-toolkit
 - 国内镜像（CNB）：https://cnb.cool/ahao-learn/ahao-learn-toolkit
 
 两边内容一样，GitHub 更新后会自动同步到 CNB。

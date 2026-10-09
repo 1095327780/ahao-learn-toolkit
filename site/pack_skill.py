@@ -20,7 +20,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-REPO = "1095327780/ahao-learn-toolkit"  # change here after the repo moves to the ahao-learn organisation
+REPO = "ahao-learn/ahao-learn-toolkit"
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".yaml", ".yml", ".py", ".js", ".ts", ".sh", ".csv", ".html", ".css", ".toml"}
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 LONG_POST_LIMIT = 8000  # 抖音长文上限（2025-12 媒体报道）

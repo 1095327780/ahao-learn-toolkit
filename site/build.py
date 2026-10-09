@@ -24,7 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
 DIST = ROOT / "dist"
-GITHUB = "https://github.com/1095327780/ahao-learn-toolkit"
+GITHUB = "https://github.com/ahao-learn/ahao-learn-toolkit"
 CNB = "https://cnb.cool/ahao-learn/ahao-learn-toolkit"
 # 思源宋体 Heavy (SIL OFL). Used for headings only, subset per build so the page stays light.
 SERIF_URL = "https://github.com/adobe-fonts/source-han-serif/raw/release/SubsetOTF/CN/SourceHanSerifCN-Heavy.otf"
