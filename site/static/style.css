@@ -251,12 +251,6 @@ h1, h2, h3 { line-height: 1.25; margin: 0; }
 .refs ul { margin: 0 0 20px; padding-left: 1.2em; }
 .refs li { font-size: 14px; color: var(--ink-2); margin: 6px 0; }
 .about-line { font-size: 18px; margin: 0; }
-.accounts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 22px; max-width: 560px; }
-.account { display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
-a.account:hover { border-color: var(--blue-2); transform: translateY(-1px); }
-.account b { font-size: 14px; }
-.account span { font-size: 13px; color: var(--muted); }
-.account small { font-size: 12px; color: var(--muted); }
 .footer-links span { font-size: 14px; }
 .ep-main { min-width: 0; }
 .block { padding-bottom: 44px; margin-bottom: 44px; border-bottom: 1px solid var(--line); }
@@ -339,7 +333,6 @@ a.account:hover { border-color: var(--blue-2); transform: translateY(-1px); }
   .vols { grid-template-columns: 1fr; }
   .tools { grid-template-columns: 1fr; }
   .about { grid-template-columns: 1fr; gap: 20px; }
-  .accounts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .about img { width: 80px; height: 80px; border-radius: 20px; }
   .ep-hero-grid { padding: 36px 0 44px; }
   .ep-body { padding-top: 28px; }
@@ -353,8 +346,6 @@ a.account:hover { border-color: var(--blue-2); transform: translateY(-1px); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 
 /* WeChat QR dialogs (公众号 / 视频号 have no public web page) */
-button.account { font: inherit; color: inherit; text-align: left; cursor: pointer; transition: border-color .15s, transform .15s; }
-button.account:hover { border-color: var(--blue-2); transform: translateY(-1px); }
 .link-btn { padding: 0; border: 0; background: none; color: inherit; font: 14px var(--sans); cursor: pointer; }
 .link-btn:hover { color: #fff; }
 .qr { width: min(340px, 100% - 32px); padding: 28px 24px 22px; border: 0; border-radius: 20px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow-lg); text-align: center; }
@@ -365,3 +356,29 @@ button.account:hover { border-color: var(--blue-2); transform: translateY(-1px);
 .qr img { width: 100%; max-height: 360px; object-fit: contain; border-radius: 12px; background: #fff; }
 .qr-tip { margin: 14px 0 0; font-size: 14px; color: var(--ink-2); }
 .qr-tip small { color: var(--muted); font-size: 12px; }
+
+/* platform icons */
+.socials { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.social {
+  position: relative; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--line); color: var(--brand); cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s, transform .18s;
+}
+.social svg { width: 22px; height: 22px; fill: currentColor; }
+.social:hover, .social:focus-visible { background: var(--brand); border-color: var(--brand); color: #fff; transform: translateY(-2px); }
+.social::after {
+  content: attr(data-label); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translate(-50%, 4px);
+  padding: 4px 10px; border-radius: 8px; background: var(--ink); color: var(--bg); font: 600 12px var(--sans); white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+}
+.social:hover::after, .social:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-color-scheme: dark) { .social[style*="#111111"] { color: #fff; } .social[style*="#111111"]:hover { background: #fff; color: #111; } }
+.footer-social { display: flex; flex-wrap: wrap; gap: 10px; }
+.social-sm { width: 38px; height: 38px; background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .12); color: rgba(233, 236, 245, .8); }
+.social-sm svg { width: 18px; height: 18px; }
+.social-sm::after { background: #fff; color: #111; }
+.footer-top { align-items: flex-start; }
+.footer-right { display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
+.social-sm[style*="#111111"]:hover { background: #fff; border-color: #fff; color: #111; }
+@media (max-width: 680px) { .footer-right { align-items: flex-start; } }
+@media (max-width: 680px) { .socials { gap: 10px; } .social:not(.social-sm) { width: 44px; height: 44px; } .social:not(.social-sm) svg { width: 20px; height: 20px; } }

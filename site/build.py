@@ -151,7 +151,8 @@ def page(title, body, description):
 <footer class="footer"><div class="wrap">
 <div class="footer-top">
 <div class="footer-brand"><img src="/static/logo.jpg" alt="" width="44" height="44"><div><strong class="serif">{serif('AI 时代的成长说明书')}</strong><span>收录视频配套的提示词与 Skill。</span></div></div>
-<div class="footer-links">{account_links()}{''.join(f'<a href="{url}">{esc(name)}</a>' for name, url in LINKS.items())}</div>
+<div class="footer-right"><div class="footer-social">{social_icons("social social-sm")}</div>
+<div class="footer-links">{''.join(f'<a href="{url}">{esc(name)}</a>' for name, url in LINKS.items())}</div></div>
 </div>
 <p class="fine">© 2026 阿浩_Learn · 提示词和 Skill 以 MIT 许可开源</p>
 </div></footer>
@@ -166,30 +167,34 @@ def primary_account():
     return next((a for a in ACCOUNTS if a.get("primary") and a.get("url")), ACCOUNTS[0])
 
 
-def account_links():
-    """Footer: accounts with a web address become links; WeChat ones open their QR code."""
-    out = ""
-    for i, a in enumerate(ACCOUNTS):
-        if a.get("url"):
-            out += f'<a href="{esc(a["url"])}">{esc(a["platform"])}</a>'
-        elif a.get("qr"):
-            out += f'<button class="link-btn" type="button" data-qr="qr-{i}">{esc(a["platform"])}</button>'
-        else:
-            out += f'<span>{esc(a["platform"])}：{esc(a.get("search", a["name"]))}</span>'
-    return out
+# platform -> (icon file in site/icons, brand colour)
+PLATFORMS = {
+    "B站": ("bilibili", "#00A1D6"),
+    "抖音": ("tiktok", "#111111"),
+    "YouTube": ("youtube", "#FF0000"),
+    "小红书": ("xiaohongshu", "#FF2442"),
+    "视频号": ("channels", "#FA9D3B"),
+    "公众号": ("wechat", "#07C160"),
+    "X": ("x", "#111111"),
+}
 
 
-def account_cards():
-    """About section: one card per platform account; WeChat accounts open a QR dialog."""
+def icon(name):
+    svg = (SITE / "icons" / f"{name}.svg").read_text(encoding="utf-8")
+    svg = re.sub(r"<title>.*?</title>", "", svg)
+    return svg.replace("<svg ", '<svg aria-hidden="true" focusable="false" ', 1).replace(' role="img"', "")
+
+
+def social_icons(cls="social"):
+    """Round platform icons, the usual way sites link their accounts; WeChat ones open a QR dialog."""
     out = ""
     for i, a in enumerate(ACCOUNTS):
-        inner = f'<b>{esc(a["platform"])}</b><span>{esc(a["name"])}</span>'
+        slug, colour = PLATFORMS.get(a["platform"], ("github", "#333333"))
+        attrs = f'class="{cls}" style="--brand:{colour}" aria-label="{esc(a["platform"])}" data-label="{esc(a["platform"])}"'
         if a.get("url"):
-            out += f'<a class="account" href="{esc(a["url"])}">{inner}</a>'
+            out += f'<a {attrs} href="{esc(a["url"])}">{icon(slug)}</a>'
         elif a.get("qr"):
-            out += f'<button class="account" type="button" data-qr="qr-{i}">{inner}<small>扫码关注</small></button>'
-        else:
-            out += f'<div class="account">{inner}<small>{esc(a.get("search", "搜索：" + a["name"]))}</small></div>'
+            out += f'<button {attrs} type="button" data-qr="qr-{i}">{icon(slug)}</button>'
     return out
 
 
@@ -418,7 +423,7 @@ def home_page(episodes, volumes):
 <img src="/static/logo.jpg" alt="阿浩_Learn" width="112" height="112">
 <div><p class="kicker">关于</p><h2 class="serif">{serif('阿浩_Learn')}</h2>
 <p class="about-line">AI 时代的成长说明书</p>
-<div class="accounts">{account_cards()}</div></div>
+<div class="socials">{social_icons()}</div></div>
 </div></section>
 </main>"""
     return page("阿浩_Learn｜AI 时代的成长说明书", body, "阿浩_Learn：AI 时代的成长说明书。收录每期视频配套的提示词与 Skill。")
