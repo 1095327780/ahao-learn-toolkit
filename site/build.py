@@ -28,6 +28,7 @@ CNB = "https://cnb.cool/ahao-learn/ahao-learn-toolkit"
 SERIF_URL = "https://github.com/adobe-fonts/source-han-serif/raw/release/SubsetOTF/CN/SourceHanSerifCN-Heavy.otf"
 SERIF_CACHE = ROOT / ".cache" / "SourceHanSerifCN-Heavy.otf"
 LINKS = {}
+ACCOUNTS = []  # platform accounts from episodes.json; the one with "primary": true goes in the nav and hero
 
 esc = html.escape
 serif_text = set()  # every character that may be set in the heading font
@@ -144,13 +145,13 @@ def page(title, body, description):
 <header class="nav"><div class="wrap nav-inner">
 <a class="brand" href="/"><img src="/static/logo.jpg" alt="" width="34" height="34"><span>阿浩_Learn</span></a>
 <nav class="nav-links">{nav}</nav>
-<a class="nav-cta" href="{LINKS['B站']}">B站主页</a>
+<a class="nav-cta" href="{primary_account()['url']}">{esc(primary_account()['platform'])}主页</a>
 </div></header>
 {body}
 <footer class="footer"><div class="wrap">
 <div class="footer-top">
 <div class="footer-brand"><img src="/static/logo.jpg" alt="" width="44" height="44"><div><strong class="serif">{serif('AI 时代的成长说明书')}</strong><span>收录视频配套的提示词与 Skill。</span></div></div>
-<div class="footer-links">{''.join(f'<a href="{url}">{esc(name)}</a>' for name, url in LINKS.items())}</div>
+<div class="footer-links">{account_links()}{''.join(f'<a href="{url}">{esc(name)}</a>' for name, url in LINKS.items())}</div>
 </div>
 <p class="fine">© 2026 阿浩_Learn · 提示词和 Skill 以 MIT 许可开源</p>
 </div></footer>
@@ -158,6 +159,33 @@ def page(title, body, description):
 </body>
 </html>
 """
+
+
+def primary_account():
+    return next((a for a in ACCOUNTS if a.get("primary") and a.get("url")), ACCOUNTS[0])
+
+
+def account_links():
+    """Footer: accounts with a web address become links; WeChat-style ones show the name to search."""
+    out = ""
+    for a in ACCOUNTS:
+        if a.get("url"):
+            out += f'<a href="{esc(a["url"])}">{esc(a["platform"])}</a>'
+        else:
+            out += f'<span>{esc(a["platform"])}：{esc(a.get("search", a["name"]))}</span>'
+    return out
+
+
+def account_cards():
+    """About section: one card per platform account."""
+    out = ""
+    for a in ACCOUNTS:
+        inner = f'<b>{esc(a["platform"])}</b><span>{esc(a["name"])}</span>'
+        if a.get("url"):
+            out += f'<a class="account" href="{esc(a["url"])}">{inner}</a>'
+        else:
+            out += f'<div class="account">{inner}<small>{esc(a.get("search", "搜索：" + a["name"]))}</small></div>'
+    return out
 
 
 def badge(ep, vol):
@@ -211,7 +239,7 @@ def episode_page(ep, vol, older, newer):
     sec = prompt_sections((ROOT / ep["prompt"]).read_text(encoding="utf-8")) if ep.get("prompt") else {}
     heading = sec.get("_title", ep["title"])
     video_url = next(iter(ep["videos"].values()), None)
-    video_links = "".join(f'<a class="btn btn-ghost" href="{esc(u)}">观看视频</a>' for k, u in ep["videos"].items())
+    video_links = "".join(f'<a class="btn btn-ghost" href="{esc(u)}">在{esc(k)}观看</a>' for k, u in ep["videos"].items())
     if ep.get("cover"):
         cover = (f'<a class="ep-cover" href="{esc(video_url or "#")}"><img src="/static/{ep["cover"]}" alt="{esc(ep["title"])} 封面">'
                  '<span class="play" aria-hidden="true"></span></a>')
@@ -337,7 +365,7 @@ def home_page(episodes, volumes):
 <p class="eyebrow">阿浩_Learn · 视频配套工具箱</p>
 <h1 class="serif">{serif('AI 时代的')}<br><mark>{serif('成长说明书')}</mark></h1>
 <p class="lead">围绕大脑、注意力、情绪与判断力，每期讲清一个日常卡点，并提供配套的提示词与 Skill。</p>
-<div class="actions"><a class="btn btn-light" href="#tools">查看工具</a><a class="btn btn-outline" href="{LINKS['B站']}">观看视频</a></div>
+<div class="actions"><a class="btn btn-light" href="#tools">查看工具</a><a class="btn btn-outline" href="{primary_account()['url']}">观看视频</a></div>
 <dl class="stats"><div><dt>{len(published)}</dt><dd>期已发布</dd></div><div><dt>5</dt><dd>本分册</dd></div></dl>
 </div>
 <div class="hero-art" aria-hidden="true">{stack}</div>
@@ -370,7 +398,7 @@ def home_page(episodes, volumes):
 <img src="/static/logo.jpg" alt="阿浩_Learn" width="112" height="112">
 <div><p class="kicker">关于</p><h2 class="serif">{serif('阿浩_Learn')}</h2>
 <p class="about-line">AI 时代的成长说明书</p>
-<div class="actions"><a class="btn" href="{LINKS['B站']}">B站主页</a><a class="btn btn-ghost" href="{LINKS['GitHub']}">GitHub</a></div></div>
+<div class="accounts">{account_cards()}</div></div>
 </div></section>
 </main>"""
     return page("阿浩_Learn｜AI 时代的成长说明书", body, "阿浩_Learn：AI 时代的成长说明书。收录每期视频配套的提示词与 Skill。")
@@ -411,6 +439,7 @@ def subset_font():
 def build(drafts):
     data = json.loads((SITE / "episodes.json").read_text(encoding="utf-8"))
     LINKS.update(data["links"])
+    ACCOUNTS[:] = data["accounts"]
     volumes = data["volumes"]
     vols = {v["name"]: v for v in volumes}
     episodes = [e for e in data["episodes"] if drafts or not e.get("draft")]

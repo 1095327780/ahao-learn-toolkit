@@ -111,8 +111,15 @@
       ]
     }
   ],
+  "accounts": [
+    {
+      "platform": "B站",
+      "name": "阿浩_Learn",
+      "url": "https://space.bilibili.com/24543451",
+      "primary": true
+    }
+  ],
   "links": {
-    "B站": "https://space.bilibili.com/24543451",
     "GitHub": "https://github.com/1095327780/ahao-learn-toolkit",
     "CNB 国内镜像": "https://cnb.cool/ahao-learn/ahao-learn-toolkit",
     "FLOWnote": "https://github.com/1095327780/FLOWnote"
