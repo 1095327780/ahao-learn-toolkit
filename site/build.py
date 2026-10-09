@@ -149,7 +149,7 @@ def page(title, body, description):
 {body}
 <footer class="footer"><div class="wrap">
 <div class="footer-top">
-<div class="footer-brand"><img src="/static/logo.jpg" alt="" width="44" height="44"><div><strong class="serif">{serif('AI 时代的成长说明书')}</strong><span>视频里用到的提示词和 Skill 都放在这里，免费拿去用，不用关注、不用留言。</span></div></div>
+<div class="footer-brand"><img src="/static/logo.jpg" alt="" width="44" height="44"><div><strong class="serif">{serif('AI 时代的成长说明书')}</strong><span>收录视频配套的提示词与 Skill。</span></div></div>
 <div class="footer-links">{''.join(f'<a href="{url}">{esc(name)}</a>' for name, url in LINKS.items())}</div>
 </div>
 <p class="fine">© 2026 阿浩_Learn · 提示词和 Skill 以 MIT 许可开源</p>
@@ -196,12 +196,22 @@ def skill_meta(name):
     return (title.group(1).strip() if title else name), (goal.group(1).strip() if goal else "")
 
 
+def collapsible(text, label, copy_label="复制全文"):
+    """A document panel that shows the first lines and expands on demand; copy always copies everything."""
+    return (
+        f'<figure class="doc is-collapsed"><figcaption><span class="dots"><i></i><i></i><i></i></span><span>{esc(label)}</span>'
+        f'<button class="copy" type="button">{esc(copy_label)}</button></figcaption>'
+        f'<pre><code>{esc(text)}</code></pre>'
+        '<button class="expand" type="button" data-more="展开全文" data-less="收起">展开全文</button></figure>'
+    )
+
+
 def episode_page(ep, vol, older, newer):
     has_tools = bool(ep.get("prompt") or ep.get("skills"))
     sec = prompt_sections((ROOT / ep["prompt"]).read_text(encoding="utf-8")) if ep.get("prompt") else {}
     heading = sec.get("_title", ep["title"])
     video_url = next(iter(ep["videos"].values()), None)
-    video_links = "".join(f'<a class="btn btn-ghost" href="{esc(u)}">在{esc(k)}看视频</a>' for k, u in ep["videos"].items())
+    video_links = "".join(f'<a class="btn btn-ghost" href="{esc(u)}">观看视频</a>' for k, u in ep["videos"].items())
     if ep.get("cover"):
         cover = (f'<a class="ep-cover" href="{esc(video_url or "#")}"><img src="/static/{ep["cover"]}" alt="{esc(ep["title"])} 封面">'
                  '<span class="play" aria-hidden="true"></span></a>')
@@ -209,53 +219,60 @@ def episode_page(ep, vol, older, newer):
         cover = (f'<div class="ep-cover"><div class="ep-cover-soon"><span class="serif">{serif("No." + ep["no"])}</span>'
                  f'<small>{esc(vol["name"])} · 视频即将发布</small></div></div>')
 
-    blocks, toc = [], []
-    if ep.get("prompt"):
-        prompt_key = next((k for k in sec if k.startswith("提示词")), "")
-        note = prompt_key[len("提示词"):].strip("（）() ")
-        code = re.search(r"```(?:text)?\n(.*?)```", sec.get(prompt_key, ""), re.S)
-        toc += [("when", "什么时候用"), ("prompt", "提示词")]
-        blocks.append(f'<section id="when" class="block"><h2 class="serif">{serif("什么时候用")}</h2>{markdown(sec.get("什么时候用", ""))}</section>')
-        blocks.append(
-            f'<section id="prompt" class="block"><h2 class="serif">{serif("提示词")}</h2>'
-            f'<p class="muted">{esc(note) if note else "复制全文，发给你常用的 AI。"}</p>'
-            f'{code_block(code.group(1).rstrip() if code else sec.get(prompt_key, ""))}</section>'
+    blocks = []
+    if has_tools:
+        tabs, panels = [], []
+        if ep.get("prompt"):
+            prompt_key = next((k for k in sec if k.startswith("提示词")), "")
+            note = prompt_key[len("提示词"):].strip("（）() ")
+            code = re.search(r"```(?:text)?\n(.*?)```", sec.get(prompt_key, ""), re.S)
+            tabs.append(("prompt", "提示词版"))
+            panels.append(
+                f'<div class="tab-panel" id="tab-prompt"><p class="panel-note">{esc(note) if note else "复制全文，发送给常用的 AI。"}</p>'
+                f'{collapsible(code.group(1).rstrip() if code else sec.get(prompt_key, ""), "提示词", "复制提示词")}</div>'
+            )
+        for name in ep.get("skills", []):
+            size = zip_skill(name)
+            title, _ = skill_meta(name)
+            install = (
+                f"帮我安装这个 Skill：{GITHUB}/tree/main/skills/{name}\n"
+                f"（国内打不开 GitHub 的话，用这个地址：{CNB}）\n"
+                "装到你的 Skill 目录（Claude Code 是 ~/.claude/skills/），装好后告诉我怎么用。"
+            )
+            tabs.append((f"skill-{name}", "Skill 版"))
+            panels.append(f"""<div class="tab-panel" id="tab-skill-{name}" hidden>
+<p class="panel-note">适用于 Claude Code、Codex、Cursor 等 AI Agent。下载后解压至 Skill 目录，或将下方指令发送给 Agent 自动安装。</p>
+<div class="skill-row"><a class="btn" href="/downloads/{name}.zip" download>下载 {name}.zip</a><span class="muted small">{size / 1024:.1f} KB · 源文件在 <a href="{GITHUB}/tree/main/skills/{name}">GitHub</a> / <a href="{CNB}">CNB</a></span></div>
+<figure class="doc"><figcaption><span class="dots"><i></i><i></i><i></i></span><span>安装说明</span><button class="copy" type="button">复制全文</button></figcaption><pre><code>{esc(install)}</code></pre></figure>
+</div>""")
+        tab_buttons = "".join(
+            f'<button class="tab" type="button" role="tab" data-tab="tab-{i}" aria-selected="{str(n == 0).lower()}">{esc(t)}</button>'
+            for n, (i, t) in enumerate(tabs)
         )
+        blocks.append(f'<section class="tool-panel" id="tool"><div class="tabs" role="tablist">{tab_buttons}</div>{"".join(panels)}</section>')
+
+        cards = ""
+        if sec.get("什么时候用"):
+            cards += f'<div class="info-card"><h2 class="serif">{serif("适用场景")}</h2>{markdown(sec["什么时候用"])}</div>'
         if sec.get("用法"):
-            toc.append(("how", "怎么用"))
-            blocks.append(f'<section id="how" class="block steps"><h2 class="serif">{serif("怎么用")}</h2>{markdown(sec["用法"])}</section>')
-    for name in ep.get("skills", []):
-        size = zip_skill(name)
-        title, goal = skill_meta(name)
-        install = (
-            f"帮我安装这个 Skill：{GITHUB}/tree/main/skills/{name}\n"
-            f"（国内打不开 GitHub 的话，用这个地址：{CNB}）\n"
-            "装到你的 Skill 目录（Claude Code 是 ~/.claude/skills/），装好后告诉我怎么用。"
-        )
-        toc.append((f"skill-{name}", f"Skill 版"))
-        blocks.append(f"""<section id="skill-{name}" class="block skill-card">
-<div class="skill-head"><span class="chip chip-solid">Skill</span><h2 class="serif">{serif(title)}</h2></div>
-<p>{esc(goal)}</p>
-<p class="muted">给 Claude Code、Codex、Cursor 这类 AI agent 用。下载后解压到 Skill 目录；或者把下面这段发给你的 agent，让它帮你装。</p>
-<div class="actions"><a class="btn" href="/downloads/{name}.zip" download>下载 {name}.zip</a><span class="muted small">{size / 1024:.1f} KB · 源文件在 <a href="{GITHUB}/tree/main/skills/{name}">GitHub</a> / <a href="{CNB}">CNB</a></span></div>
-{code_block(install, "安装说明")}
-</section>""")
-    if sec.get("背后的依据"):
-        toc.append(("refs", "背后的依据"))
-        blocks.append(f'<section id="refs" class="block refs"><h2 class="serif">{serif("背后的依据")}</h2>{markdown(sec["背后的依据"])}</section>')
-    if not has_tools:
+            cards += f'<div class="info-card steps"><h2 class="serif">{serif("使用方法")}</h2>{markdown(sec["用法"])}</div>'
+        if cards:
+            blocks.append(f'<section class="info-grid">{cards}</section>')
+        if sec.get("背后的依据"):
+            refs = "\n".join(l for l in sec["背后的依据"].splitlines() if "skills/" not in l)  # the Skill tab already covers this
+            blocks.append(f'<details class="refs"><summary class="serif">{serif("参考依据")}</summary>{markdown(refs)}</details>')
+    else:
         points = "".join(f"<li>{esc(x)}</li>" for x in ep.get("points", []))
-        blocks.append(f'<section class="block steps"><h2 class="serif">{serif("观看要点")}</h2>'
+        blocks.append(f'<section class="info-card steps wide"><h2 class="serif">{serif("观看要点")}</h2>'
                       + (f"<ol>{points}</ol>" if points else "")
-                      + '<p class="muted note">这一期没有单独的提示词或 Skill，方法都在视频里讲完了。</p></section>')
+                      + '<p class="muted note">本期无配套提示词与 Skill，相关方法已在视频中完整讲解。</p></section>')
 
     pager = '<nav class="pager">' + (
         f'<a href="/{older["no"]}/"><small>← 上一期 · No.{older["no"]}</small><span>{esc(older["title"])}</span></a>' if older else "<span></span>"
     ) + (
         f'<a class="next" href="/{newer["no"]}/"><small>下一期 · No.{newer["no"]} →</small><span>{esc(newer["title"])}</span></a>' if newer else "<span></span>"
     ) + "</nav>"
-    aside_toc = "".join(f'<a href="#{i}">{esc(t)}</a>' for i, t in toc)
-    primary = '<a class="btn" href="#prompt">拿提示词</a>' if ep.get("prompt") else ""
+    primary = '<a class="btn" href="#tool">查看提示词</a>' if ep.get("prompt") else ""
 
     body = f"""
 <main class="episode" style="--c:{vol['color']}">
@@ -270,13 +287,7 @@ def episode_page(ep, vol, older, newer):
 </div>
 {cover}
 </div></section>
-<div class="wrap ep-body">
-<article class="ep-main">{''.join(blocks)}{pager}</article>
-<aside class="ep-aside"><div class="aside-card">
-{('<p class="aside-title">本页</p><div class="aside-toc">' + aside_toc + '</div>') if aside_toc else ''}
-<dl><dt>编号</dt><dd>No.{ep['no']}</dd><dt>分册</dt><dd>{esc(vol['name'])}</dd><dt>工具</dt><dd>{tool_chips(ep) or '—'}</dd><dt>费用</dt><dd>免费，无门槛</dd></dl>
-</div></aside>
-</div>
+<div class="wrap ep-body">{''.join(blocks)}{pager}</div>
 </main>"""
     return page(f"{heading}｜阿浩_Learn", body, ep["summary"])
 
@@ -314,7 +325,7 @@ def home_page(episodes, volumes):
         name = prompt_sections((ROOT / e["prompt"]).read_text(encoding="utf-8")).get("_title", e["title"]) if e.get("prompt") else e["title"]
         tools += (
             f'<a class="tool" href="/{e["no"]}/" style="--c:{v["color"]}"><div class="tool-top">{badge(e, v)}<span class="tool-chips">{tool_chips(e)}</span></div>'
-            f'<h3 class="serif">{serif(name)}</h3><p>{esc(e["summary"])}</p><span class="tool-go">打开 →</span></a>'
+            f'<h3 class="serif">{serif(name)}</h3><p>{esc(e["summary"])}</p><span class="tool-go">查看 →</span></a>'
         )
 
     latest_art = (f'<img src="/static/{latest["cover"]}" alt="">' if latest.get("cover")
@@ -325,9 +336,9 @@ def home_page(episodes, volumes):
 <div class="hero-copy">
 <p class="eyebrow">阿浩_Learn · 视频配套工具箱</p>
 <h1 class="serif">{serif('AI 时代的')}<br><mark>{serif('成长说明书')}</mark></h1>
-<p class="lead">大脑、注意力、情绪、判断力，这些东西你天天在用，却没人教过你怎么用。每期视频讲清一个卡住你的时刻，能做成工具的，就做成提示词和 Skill 放在这里。</p>
-<div class="actions"><a class="btn btn-light" href="#tools">打开工具箱</a><a class="btn btn-outline" href="{LINKS['B站']}">去B站看视频</a></div>
-<dl class="stats"><div><dt>{len(published)}</dt><dd>期已发布</dd></div><div><dt>5</dt><dd>本分册</dd></div><div><dt>0</dt><dd>领取门槛</dd></div></dl>
+<p class="lead">围绕大脑、注意力、情绪与判断力，每期讲清一个日常卡点，并提供配套的提示词与 Skill。</p>
+<div class="actions"><a class="btn btn-light" href="#tools">查看工具</a><a class="btn btn-outline" href="{LINKS['B站']}">观看视频</a></div>
+<dl class="stats"><div><dt>{len(published)}</dt><dd>期已发布</dd></div><div><dt>5</dt><dd>本分册</dd></div></dl>
 </div>
 <div class="hero-art" aria-hidden="true">{stack}</div>
 </div></section>
@@ -335,40 +346,34 @@ def home_page(episodes, volumes):
 <section class="section" id="latest"><div class="wrap">
 <a class="feature" href="/{latest['no']}/" style="--c:{lv['color']}">
 <div class="feature-copy"><p class="kicker">最新一期</p>{badge(latest, lv)}<h2 class="serif">{serif(latest['title'])}</h2><p>{esc(latest['summary'])}</p>
-<span class="btn">{'拿这期的工具' if latest.get('prompt') else '查看这一期'}</span></div>
+<span class="btn">{'查看配套工具' if latest.get('prompt') else '查看本期'}</span></div>
 <div class="feature-art">{latest_art}</div>
 </a>
 </div></section>
 
 <section class="section" id="toc"><div class="wrap">
-<div class="section-head"><p class="kicker">目录</p><h2 class="serif">{serif('全部期')}</h2><p>编号全账号连续，每一期都能在B站看完整版。</p></div>
+<div class="section-head"><p class="kicker">目录</p><h2 class="serif">{serif('往期内容')}</h2><p>每一期均可在 B 站观看完整视频。</p></div>
 <div class="toc">{''.join(row(e) for e in episodes)}</div>
 </div></section>
 
 <section class="section section-alt"><div class="wrap">
-<div class="section-head"><p class="kicker">分册</p><h2 class="serif">{serif('五本使用说明')}</h2><p>这些东西你天天在用，但没人教过你怎么用。每一期属于其中一本。</p></div>
+<div class="section-head"><p class="kicker">分册</p><h2 class="serif">{serif('五本使用说明')}</h2></div>
 <div class="vols">{vol_cards}</div>
 </div></section>
 
 <section class="section" id="tools"><div class="wrap">
-<div class="section-head"><p class="kicker">工具箱</p><h2 class="serif">{serif('拿去就能用')}</h2><p>提示词复制给任何 AI 都能用：豆包、DeepSeek、Kimi、ChatGPT、Claude。Skill 给 AI agent 用。</p></div>
+<div class="section-head"><p class="kicker">工具箱</p><h2 class="serif">{serif('配套工具')}</h2><p>提供每期配套的提示词与 Skill，支持主流 AI 工具与 Agent。</p></div>
 <div class="tools">{tools}</div>
-<ol class="how">
-<li><b class="serif">{serif('复制')}</b><span>在每期页面点“复制全文”，拿到完整提示词。</span></li>
-<li><b class="serif">{serif('发给 AI')}</b><span>贴给你常用的 AI，再用一两句话说说你的情况。</span></li>
-<li><b class="serif">{serif('做一小步')}</b><span>它会帮你把方法落到你自己身上，做完一步就算赢。</span></li>
-</ol>
 </div></section>
 
 <section class="section section-alt" id="about"><div class="wrap about">
 <img src="/static/logo.jpg" alt="阿浩_Learn" width="112" height="112">
-<div><p class="kicker">关于</p><h2 class="serif">{serif('我是阿浩')}</h2>
-<p>用心理学和脑科学研究，讲清学习、注意力、情绪、判断里那些卡住你的时刻，以及接下来怎么办。每个说法尽量找到一手研究，找不到的，会直说。</p>
-<p>我也在做 Obsidian 插件 <a href="{LINKS['FLOWnote']}">FLOWnote</a>，FLOW 笔记法的内容也在B站。</p>
+<div><p class="kicker">关于</p><h2 class="serif">{serif('阿浩_Learn')}</h2>
+<p class="about-line">AI 时代的成长说明书</p>
 <div class="actions"><a class="btn" href="{LINKS['B站']}">B站主页</a><a class="btn btn-ghost" href="{LINKS['GitHub']}">GitHub</a></div></div>
 </div></section>
 </main>"""
-    return page("阿浩_Learn｜AI 时代的成长说明书", body, "阿浩_Learn：AI 时代的成长说明书。每期视频配套的提示词和 Skill，免费拿去用。")
+    return page("阿浩_Learn｜AI 时代的成长说明书", body, "阿浩_Learn：AI 时代的成长说明书。收录每期视频配套的提示词与 Skill。")
 
 
 # ---------- font ----------
@@ -420,8 +425,8 @@ def build(drafts):
         out.write_text(episode_page(ep, vols[ep["volume"]], older, newer), encoding="utf-8")
     (DIST / "index.html").write_text(home_page(episodes, volumes), encoding="utf-8")
     (DIST / "404.html").write_text(
-        page("没找到这一页｜阿浩_Learn",
-             f'<main class="section"><div class="wrap narrow"><h1 class="serif">{serif("没找到这一页")}</h1><p><a class="btn" href="/">回到首页</a></p></div></main>', ""),
+        page("页面未找到｜阿浩_Learn",
+             f'<main class="section"><div class="wrap narrow"><h1 class="serif">{serif("页面未找到")}</h1><p><a class="btn" href="/">返回首页</a></p></div></main>', ""),
         encoding="utf-8",
     )
     (DIST / "CNAME").write_text("www.ahaolearn.com\n", encoding="utf-8")
