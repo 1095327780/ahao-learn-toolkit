@@ -53,7 +53,8 @@
       "summary": "提前焦虑并不能减少真正面对时的难受。怎么分清自己是在焦虑还是在准备，以及四个让大脑停止空转的办法。",
       "cover": "covers/04.jpg",
       "videos": {
-        "B站": "https://www.bilibili.com/video/BV1y9HQ6CE4A/"
+        "B站": "https://www.bilibili.com/video/BV1y9HQ6CE4A/",
+        "YouTube": "https://www.youtube.com/watch?v=sOfz3-4OE0c"
       },
       "points": [
         "坐在沙发上胡思乱想时，冷冷地问自己一句：“我现在立刻能做的一件事，到底是什么？”",
@@ -71,7 +72,9 @@
       "summary": "疲劳更像一盏信号灯，提醒你眼前的事该换了。分清疲劳和无聊，以及真正管用的休息方式。",
       "cover": "covers/03.jpg",
       "videos": {
-        "B站": "https://www.bilibili.com/video/BV1dupw6WEJL/"
+        "B站": "https://www.bilibili.com/video/BV1dupw6WEJL/",
+        "抖音": "https://www.douyin.com/video/7693531597588466986",
+        "YouTube": "https://www.youtube.com/watch?v=vHwbZB4pMiI"
       },
       "points": [
         "高强度思考后该怎么歇",
@@ -91,7 +94,9 @@
         "thinking-coach"
       ],
       "videos": {
-        "B站": "https://www.bilibili.com/video/BV12pHq6BEnZ/"
+        "B站": "https://www.bilibili.com/video/BV12pHq6BEnZ/",
+        "抖音": "https://www.douyin.com/video/7692432328060095787",
+        "YouTube": "https://www.youtube.com/watch?v=zXxsS7WrULY"
       }
     },
     {
@@ -117,6 +122,31 @@
       "name": "阿浩_Learn",
       "url": "https://space.bilibili.com/24543451",
       "primary": true
+    },
+    {
+      "platform": "抖音",
+      "name": "阿浩_Learn",
+      "url": "https://www.douyin.com/user/MS4wLjABAAAApWkfXTrgseEIiD5yU4pD5u6qmvt3bE1D07LVdMyO8pk"
+    },
+    {
+      "platform": "YouTube",
+      "name": "阿浩_Learn",
+      "url": "https://www.youtube.com/channel/UCqQJ0iJK4RZ1gqspvRXNh_g"
+    },
+    {
+      "platform": "小红书",
+      "name": "阿浩_Learn",
+      "url": "https://www.xiaohongshu.com/user/profile/633bc4d5000000001802bcb9"
+    },
+    {
+      "platform": "视频号",
+      "name": "阿浩Learn",
+      "search": "微信搜索：阿浩Learn"
+    },
+    {
+      "platform": "公众号",
+      "name": "阿浩Learn",
+      "search": "微信搜索：阿浩Learn"
     }
   ],
   "links": {
