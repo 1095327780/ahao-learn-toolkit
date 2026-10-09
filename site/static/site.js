@@ -40,3 +40,14 @@ document.querySelectorAll(".tool-panel").forEach(function (panel) {
 var nav = document.querySelector(".nav");
 function onScroll() { nav && nav.classList.toggle("scrolled", window.scrollY > 8); }
 window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+// WeChat QR dialogs
+document.querySelectorAll("[data-qr]").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var d = document.getElementById(btn.dataset.qr);
+    if (d && d.showModal) d.showModal();
+  });
+});
+document.querySelectorAll("dialog.qr").forEach(function (d) {
+  d.querySelector(".qr-close").addEventListener("click", function () { d.close(); });
+  d.addEventListener("click", function (e) { if (e.target === d) d.close(); });  // click on the backdrop
+});

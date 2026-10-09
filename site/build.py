@@ -155,6 +155,7 @@ def page(title, body, description):
 </div>
 <p class="fine">© 2026 阿浩_Learn · 提示词和 Skill 以 MIT 许可开源</p>
 </div></footer>
+{qr_dialogs()}
 <script src="/static/site.js"></script>
 </body>
 </html>
@@ -166,27 +167,46 @@ def primary_account():
 
 
 def account_links():
-    """Footer: accounts with a web address become links; WeChat-style ones show the name to search."""
+    """Footer: accounts with a web address become links; WeChat ones open their QR code."""
     out = ""
-    for a in ACCOUNTS:
+    for i, a in enumerate(ACCOUNTS):
         if a.get("url"):
             out += f'<a href="{esc(a["url"])}">{esc(a["platform"])}</a>'
+        elif a.get("qr"):
+            out += f'<button class="link-btn" type="button" data-qr="qr-{i}">{esc(a["platform"])}</button>'
         else:
             out += f'<span>{esc(a["platform"])}：{esc(a.get("search", a["name"]))}</span>'
     return out
 
 
 def account_cards():
-    """About section: one card per platform account."""
+    """About section: one card per platform account; WeChat accounts open a QR dialog."""
     out = ""
-    for a in ACCOUNTS:
+    for i, a in enumerate(ACCOUNTS):
         inner = f'<b>{esc(a["platform"])}</b><span>{esc(a["name"])}</span>'
         if a.get("url"):
             out += f'<a class="account" href="{esc(a["url"])}">{inner}</a>'
+        elif a.get("qr"):
+            out += f'<button class="account" type="button" data-qr="qr-{i}">{inner}<small>扫码关注</small></button>'
         else:
             out += f'<div class="account">{inner}<small>{esc(a.get("search", "搜索：" + a["name"]))}</small></div>'
     return out
 
+
+def qr_dialogs():
+    """One <dialog> per account that has a QR code; opened by any [data-qr] button on the page."""
+    out = ""
+    for i, a in enumerate(ACCOUNTS):
+        if a.get("qr"):
+            out += (
+                f'<dialog class="qr" id="qr-{i}" aria-label="{esc(a["platform"])}二维码">'
+                '<button class="qr-close" type="button" aria-label="关闭">×</button>'
+                f'<p class="qr-title"><b>{esc(a["platform"])}</b>{esc(a["name"])}</p>'
+                f'<img src="/static/{a["qr"]}" alt="{esc(a["platform"])}「{esc(a["name"])}」二维码">'
+                f'<p class="qr-tip">{esc(a.get("search", "微信扫一扫"))}<br><small>在手机微信里打开本页时，长按二维码识别</small></p>'
+                "</dialog>"
+            )
+    return out
 
 def badge(ep, vol):
     return (

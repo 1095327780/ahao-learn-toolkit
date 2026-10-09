@@ -251,8 +251,8 @@ h1, h2, h3 { line-height: 1.25; margin: 0; }
 .refs ul { margin: 0 0 20px; padding-left: 1.2em; }
 .refs li { font-size: 14px; color: var(--ink-2); margin: 6px 0; }
 .about-line { font-size: 18px; margin: 0; }
-.accounts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-.account { display: flex; flex-direction: column; gap: 2px; min-width: 132px; padding: 12px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
+.accounts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 22px; max-width: 560px; }
+.account { display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
 a.account:hover { border-color: var(--blue-2); transform: translateY(-1px); }
 .account b { font-size: 14px; }
 .account span { font-size: 13px; color: var(--muted); }
@@ -339,6 +339,7 @@ a.account:hover { border-color: var(--blue-2); transform: translateY(-1px); }
   .vols { grid-template-columns: 1fr; }
   .tools { grid-template-columns: 1fr; }
   .about { grid-template-columns: 1fr; gap: 20px; }
+  .accounts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .about img { width: 80px; height: 80px; border-radius: 20px; }
   .ep-hero-grid { padding: 36px 0 44px; }
   .ep-body { padding-top: 28px; }
@@ -350,3 +351,17 @@ a.account:hover { border-color: var(--blue-2); transform: translateY(-1px); }
   .doc pre { font-size: 13.5px; padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* WeChat QR dialogs (公众号 / 视频号 have no public web page) */
+button.account { font: inherit; color: inherit; text-align: left; cursor: pointer; transition: border-color .15s, transform .15s; }
+button.account:hover { border-color: var(--blue-2); transform: translateY(-1px); }
+.link-btn { padding: 0; border: 0; background: none; color: inherit; font: 14px var(--sans); cursor: pointer; }
+.link-btn:hover { color: #fff; }
+.qr { width: min(340px, 100% - 32px); padding: 28px 24px 22px; border: 0; border-radius: 20px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow-lg); text-align: center; }
+.qr::backdrop { background: rgba(10, 13, 24, .55); backdrop-filter: blur(4px); }
+.qr-close { position: absolute; top: 10px; right: 12px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: var(--bg-alt); color: var(--ink-2); font-size: 20px; line-height: 1; cursor: pointer; }
+.qr-title { margin: 0 0 14px; display: flex; justify-content: center; gap: 8px; font-size: 15px; }
+.qr-title b { color: var(--muted); font-weight: 600; }
+.qr img { width: 100%; max-height: 360px; object-fit: contain; border-radius: 12px; background: #fff; }
+.qr-tip { margin: 14px 0 0; font-size: 14px; color: var(--ink-2); }
+.qr-tip small { color: var(--muted); font-size: 12px; }
