@@ -7,7 +7,7 @@
 - 本地预览：`python3 site/build.py --drafts && python3 -m http.server 4173 --directory dist`。
 - 新增一期：在 `prompts/` 放提示词，在 `skills/` 放 Skill，在 `episodes.json` 加一条。视频发布后，把 `draft` 改成 `false`，再在 `videos` 里填上链接。
 
-## 部署（两处都从这个仓库构建，测速后让域名指向更快的那个）
+## 部署（当前：域名指向 EdgeOne Pages，GitHub Pages 作备用；2026-10-09）
 
 1. **GitHub Pages**：用 `.github/workflows/pages.yml`。Settings → Pages → Source 选 GitHub Actions；自定义域名填 `www.ahaolearn.com`。这个域名现在绑在 `ahaolearn.github.io` 仓库上，要先在那边移除。
 2. **EdgeOne Pages**：腾讯云控制台 → EdgeOne Pages → 导入 Git 仓库，选这个仓库。
@@ -16,3 +16,12 @@
    - 绑定自定义域名 `www.ahaolearn.com`，按提示在阿里云 DNS 加 CNAME。
 
 不要把家里的 NAS 直接暴露到公网对外建站，原因见视频项目 `research/2026-10-09/分享机制调研.md` 第 4.5 节。
+
+## 验证中国大陆能打开
+
+```
+python3 site/check_cn.py /NN/ "页面上一定有的一句话"
+```
+
+用 Globalping 的公开接口，从 10 个中国大陆节点取页面，并核对拿到的是不是本站内容。8 个及以上成功算通过。10-09 两次实测都是 9/10：解析到 EdgeOne 的 43.174.246.64 和 43.174.247.64；宁波移动那个节点两次都在建立 HTTPS 连接时超时。完整维护流程见视频项目 `.agents/skills/ahao-site/SKILL.md`。
+
