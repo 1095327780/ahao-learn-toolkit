@@ -17,6 +17,8 @@ import re
 import shutil
 import urllib.request
 import zipfile
+
+import pack_skill  # same folder; turns a skill into an install prompt for agents
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -287,6 +289,9 @@ def episode_page(ep, vol, older, newer):
         for name in ep.get("skills", []):
             size = zip_skill(name)
             title, _ = skill_meta(name)
+            files, _ = pack_skill.collect(ROOT / "skills" / name)
+            n_files = len(files)
+            prompt_text = pack_skill.install_prompt(name, pack_skill.skill_title(dict(files).get("SKILL.md", ""), name), files)
             install = (
                 f"帮我安装这个 Skill：{GITHUB}/tree/main/skills/{name}\n"
                 f"（国内打不开 GitHub 的话，用这个地址：{CNB}）\n"
@@ -297,6 +302,8 @@ def episode_page(ep, vol, older, newer):
 <p class="panel-note">适用于 Claude Code、Codex、Cursor 等 AI Agent。下载后解压至 Skill 目录，或将下方指令发送给 Agent 自动安装。</p>
 <div class="skill-row"><a class="btn" href="/downloads/{name}.zip" download>下载 {name}.zip</a><span class="muted small">{size / 1024:.1f} KB · 源文件在 <a href="{GITHUB}/tree/main/skills/{name}">GitHub</a> / <a href="{CNB}">CNB</a></span></div>
 <figure class="doc"><figcaption><span class="dots"><i></i><i></i><i></i></span><span>安装说明</span><button class="copy" type="button">复制全文</button></figcaption><pre><code>{esc(install)}</code></pre></figure>
+<p class="panel-note">下载不了、也打不开 GitHub 时，把下面这段整段发给 agent，它会把全部 {n_files} 个文件逐字建好。</p>
+{collapsible(prompt_text, "安装提示词（含全部文件）", "复制安装提示词")}
 </div>""")
         tab_buttons = "".join(
             f'<button class="tab" type="button" role="tab" data-tab="tab-{i}" aria-selected="{str(n == 0).lower()}">{esc(t)}</button>'
