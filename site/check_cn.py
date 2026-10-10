@@ -5,7 +5,7 @@ Uses the free Globalping API (no account, no captcha): ten probes in China fetch
 and each result says whether the response is really our page (the expected text is in the body).
 
     python3 site/check_cn.py                 # home page
-    python3 site/check_cn.py /05/ "拖延对症"   # a path and a piece of text that must be on it
+    python3 site/check_cn.py /05/ "拖延检视"   # a path and a piece of text that must be on it
 """
 import json
 import sys

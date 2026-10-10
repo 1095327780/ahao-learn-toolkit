@@ -40,7 +40,7 @@
       "volume": "注意力使用说明",
       "summary": "拖延最常见的三种情况：任务太大太模糊、总觉得明天肯定能解决、舍不得停下手头的事，以及怎么把第一步缩到最小。",
       "cover": "covers/05.jpg",
-      "prompt": "prompts/05-拖延对症.md",
+      "prompt": "prompts/05-拖延检视.md",
       "skills": [
         "procrastination-coach"
       ],

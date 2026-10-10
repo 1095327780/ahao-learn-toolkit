@@ -7,7 +7,7 @@
 | 期数 | 视频 | 内容 |
 |---|---|---|
 | 第 2 期 | 习惯让 AI 总结，正在毁掉你的学习 | [让 AI 考你](prompts/02-让AI考你.md)：别让 AI 替你总结，让它出题考你<br>[思维教练](skills/thinking-coach/SKILL.md)：一次问你一个问题，直到你能用自己的话讲清楚 |
-| 第 5 期 | 半小时的事，为什么能拖延一整天？ | [拖延对症](prompts/05-拖延对症.md)：先问你卡在哪，再把第一步缩到最小<br>[拖延对症 Skill](skills/procrastination-coach/SKILL.md)：同样的引导，装进 AI agent 里随时用 |
+| 第 5 期 | 半小时的事，为什么能拖延一整天？ | [拖延检视](prompts/05-拖延检视.md)：先问你卡在哪，再把第一步缩到最小<br>[拖延检视 Skill](skills/procrastination-coach/SKILL.md)：同样的引导，装进 AI agent 里随时用 |
 
 ## 提示词
 
